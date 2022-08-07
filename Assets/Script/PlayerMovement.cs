@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     public ProjectileBehaviour ProjectilePrefab;
     public Transform LaunchOffset;
 
+    public GameObject LaunchOffsetRight;
+
     bool alreadyShooting = false;
 
     float inputMagnitude;
@@ -25,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     {
         //process input
         ProcessInputs();
+
     }
 
     private void FixedUpdate()
@@ -36,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
         {
             //SailHelthBarFunction.SetHealthBarValue(SailHelthBarFunction.GetHealthBarValue() - 0.25f);
             alreadyShooting = true;
-            ShootCannon();
+            ShootCannonRight();
         }
     }
 
@@ -62,10 +65,21 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void ShootCannon()
+    private void ShootCannonRight()
     {
+        
+        GameObject[] rightCannonSpawn = GameObject.FindGameObjectsWithTag("RightBulletSpawn");
 
-        Instantiate(ProjectilePrefab, LaunchOffset.position, transform.rotation);
+        foreach (var _rightCannonSpawnPoint in rightCannonSpawn)
+        {
+            var bulletInstance = Instantiate(ProjectilePrefab, _rightCannonSpawnPoint.transform.position, _rightCannonSpawnPoint.transform.rotation);
+            Debug.Log(_rightCannonSpawnPoint);
+
+            //Destroy(bulletInstance, 3.0f);
+
+        }
+
+        //Instantiate(ProjectilePrefab, LaunchOffset.position, transform.rotation);
         Invoke(nameof(ResetAttack), timeBetweenAttack);
         Debug.Log(ProjectilePrefab + " :/: " + LaunchOffset.position + " :/: " + transform.rotation);
 
