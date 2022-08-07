@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    [SerializeField] private float moveSpeed;
+    [SerializeField] public float moveSpeed = 1.5f;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] public float timeBetweenAttack = 0.2f;
@@ -38,7 +38,6 @@ public class PlayerMovement : MonoBehaviour
             alreadyShooting = true;
             ShootCannon();
         }
-
     }
 
     void ProcessInputs()
@@ -53,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
+       
         transform.Translate(moveDirection * moveSpeed * inputMagnitude * Time.deltaTime, Space.World);
 
         if (moveDirection != Vector2.zero)

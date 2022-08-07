@@ -6,10 +6,12 @@ using UnityEngine.UI;
 public class SailHelthBarFunction : MonoBehaviour
 {
     private static Image HealthBarImage;
-    /// <summary>
-    /// Sets the health bar value
-    /// </summary>
-    /// <param name="value">should be between 0 to 1</param>
+
+    private void Start()
+    {
+        HealthBarImage = GetComponent<Image>();
+    }
+
     public static void SetHealthBarValue(float value)
     {
         //Debug.Log(HealthBarImage.fillAmount);
@@ -18,11 +20,13 @@ public class SailHelthBarFunction : MonoBehaviour
         if (GetHealthBarValue() <= 0.25f)
         {
             SetHealthBarColor(Color.red);
+
         }
 
         else if (GetHealthBarValue() <= 0.75f)
         {
             SetHealthBarColor(Color.yellow);
+
         }
 
         else
@@ -48,9 +52,5 @@ public class SailHelthBarFunction : MonoBehaviour
     /// <summary>
     /// Initialize the variable
     /// </summary>
-    private void Start()
-    {
-        
-        HealthBarImage = GetComponent<Image>();
-    }
+
 }
