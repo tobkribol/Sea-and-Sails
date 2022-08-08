@@ -5,7 +5,9 @@ using UnityEngine;
 public class ProjectileBehaviour : MonoBehaviour
 {
     [SerializeField] float speed = 12f;
-    [SerializeField] float destroyTime = 3.0f;
+    float destroyTime = 0.35f;
+
+    [SerializeField] public PlayerLife playerLife;
 
     // Update is called once per frame
     private void Update()
@@ -18,19 +20,19 @@ public class ProjectileBehaviour : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
+            SailHelthBarFunction.SetHealthBarValue(SailHelthBarFunction.GetHealthBarValue() - 0.25f);
             Destroy(collision.gameObject);
+            playerLife.SetHealthAnimationValue(); //FIX https://forum.unity.com/threads/need-help-with-accessing-variables-from-clones.1036504/
 
         }
 
-        if (collision.gameObject.CompareTag("Player"))
+        else if (collision.gameObject.CompareTag("Player"))
         {
             SailHelthBarFunction.SetHealthBarValue(SailHelthBarFunction.GetHealthBarValue() - 0.25f);
+            playerLife.SetHealthAnimationValue();
         }
 
         Destroy(gameObject);
     }
-
-    
-
 
 }

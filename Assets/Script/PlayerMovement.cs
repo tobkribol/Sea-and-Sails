@@ -70,18 +70,19 @@ public class PlayerMovement : MonoBehaviour
         
         GameObject[] rightCannonSpawn = GameObject.FindGameObjectsWithTag("RightBulletSpawn");
 
-        foreach (var _rightCannonSpawnPoint in rightCannonSpawn)
-        {
-            var bulletInstance = Instantiate(ProjectilePrefab, _rightCannonSpawnPoint.transform.position, _rightCannonSpawnPoint.transform.rotation);
-            Debug.Log(_rightCannonSpawnPoint);
+        //foreach (var _rightCannonSpawnPoint in rightCannonSpawn)
+        //{
 
-            //Destroy(bulletInstance, 3.0f);
+        //    var bulletInstance = Instantiate(ProjectilePrefab, _rightCannonSpawnPoint.transform.position, _rightCannonSpawnPoint.transform.rotation);
+        //    Debug.Log(_rightCannonSpawnPoint);
 
-        }
+        //    //Destroy(bulletInstance, 3.0f);
 
-        //Instantiate(ProjectilePrefab, LaunchOffset.position, transform.rotation);
+        //}
+
+        Instantiate(ProjectilePrefab, LaunchOffset.position, transform.rotation);
         Invoke(nameof(ResetAttack), timeBetweenAttack);
-        Debug.Log(ProjectilePrefab + " :/: " + LaunchOffset.position + " :/: " + transform.rotation);
+        //Debug.Log(ProjectilePrefab + " :/: " + LaunchOffset.position + " :/: " + transform.rotation);
 
     }
 
