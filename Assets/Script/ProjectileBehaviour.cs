@@ -4,17 +4,30 @@ using UnityEngine;
 
 public class ProjectileBehaviour : MonoBehaviour
 {
+    //Inputdata 
     [SerializeField] float speed = 12f;
-    float destroyTime = 0.35f;
+    [SerializeField] float destroyTime = 0.35f;
 
-    [SerializeField] public PlayerLife playerLife;
+    //Get Player data
+    public GameObject Player;
+    PlayerLife PlayerLifeScript;
+
 
     // Update is called once per frame
+
+    private void Start()
+    {
+        //Get Player data without turning the player into a prefab
+        Player = GameObject.FindGameObjectWithTag("Player");
+        PlayerLifeScript = Player.GetComponent<PlayerLife>();
+    }
+
+
     private void Update()
     {
-        transform.position += transform.right * Time.deltaTime * speed;
-
-        Destroy(gameObject, destroyTime);
+        //After launch
+        transform.position += transform.right * Time.deltaTime * speed; //Move projectile forward     
+        Destroy(gameObject, destroyTime); //Destroy if it does not hit anything
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -22,14 +35,13 @@ public class ProjectileBehaviour : MonoBehaviour
         {
             SailHelthBarFunction.SetHealthBarValue(SailHelthBarFunction.GetHealthBarValue() - 0.25f);
             Destroy(collision.gameObject);
-            playerLife.SetHealthAnimationValue(); //FIX https://forum.unity.com/threads/need-help-with-accessing-variables-from-clones.1036504/
-
+            PlayerLifeScript.SetHealthAnimationValue(); //Testing
         }
 
         else if (collision.gameObject.CompareTag("Player"))
         {
             SailHelthBarFunction.SetHealthBarValue(SailHelthBarFunction.GetHealthBarValue() - 0.25f);
-            playerLife.SetHealthAnimationValue();
+            PlayerLifeScript.SetHealthAnimationValue();
         }
 
         Destroy(gameObject);

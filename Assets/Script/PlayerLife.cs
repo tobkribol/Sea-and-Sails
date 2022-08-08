@@ -70,6 +70,11 @@ public class PlayerLife : MonoBehaviour
         {
             anim.Play("ship_standard_death", 0, 0.79f); //Change damage sprite
             move.moveSpeed = 0.2f;                      //Reduce player speed
+
+            if (SailHelthBarFunction.GetHealthBarValue() < 0.01f)
+            {
+                Die();
+            }
         }
 
         else if (SailHelthBarFunction.GetHealthBarValue() <= 0.4f)

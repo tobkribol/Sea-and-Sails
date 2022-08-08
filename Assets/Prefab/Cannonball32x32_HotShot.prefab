@@ -137,6 +137,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 12
-  anim: {fileID: 0}
-  move: {fileID: 0}
-  playerLife: {fileID: 0}
+  playerLife: {fileID: 4066295704575067126, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
