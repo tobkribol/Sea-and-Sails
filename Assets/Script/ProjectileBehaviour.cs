@@ -22,6 +22,11 @@ public class ProjectileBehaviour : MonoBehaviour
 
         }
 
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            SailHelthBarFunction.SetHealthBarValue(SailHelthBarFunction.GetHealthBarValue() - 0.25f);
+        }
+
         Destroy(gameObject);
     }
 
