@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3546259860334063554}
   - component: {fileID: 5013182278604835448}
   m_Layer: 0
-  m_Name: Cannonball32x32_standard 1
+  m_Name: Cannonball32x32_HotShot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b921279ea91a04a4ca6bf417bdde87ac, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0367937f37eb19a40a7eab4fd1665e7e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -137,3 +137,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 12
+  anim: {fileID: 0}
+  move: {fileID: 0}
+  playerLife: {fileID: 0}
