@@ -69,7 +69,7 @@ public class PlayerLife : MonoBehaviour
         if (SailHelthBarFunction.GetHealthBarValue() <= 0.2f)
         {
             anim.Play("ship_standard_death", 0, 0.79f); //Change damage sprite
-            move.moveSpeed = 0.2f;                      //Reduce player speed
+            //move.moveSpeed = 0.2f;                      //Reduce player speed
 
             if (SailHelthBarFunction.GetHealthBarValue() < 0.01f)
             {
@@ -80,19 +80,19 @@ public class PlayerLife : MonoBehaviour
         else if (SailHelthBarFunction.GetHealthBarValue() <= 0.4f)
         {
             anim.Play("ship_standard_death", 0, 0.59f); //Change damage sprite
-            move.moveSpeed = 0.8f;                      //Reduce player speed
+            //move.moveSpeed = 0.8f;                      //Reduce player speed
         }
 
         else if (SailHelthBarFunction.GetHealthBarValue() <= 0.6f)
         {
             anim.Play("ship_standard_death", 0, 0.39f); //Change damage sprite
-            move.moveSpeed = 1.2f;                      //Reduce player speed
+            //move.moveSpeed = 1.2f;                      //Reduce player speed
         }
 
         else if (SailHelthBarFunction.GetHealthBarValue() <= 0.8f)
         {
             anim.Play("ship_standard_death", 0, 0.19f); //Change damage sprite
-            move.moveSpeed = 1.4f;                      //Reduce player speed
+            //move.moveSpeed = 1.4f;                      //Reduce player speed
         }
 
         else

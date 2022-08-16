@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     // Variable player input
     [SerializeField] public float moveSpeed = 0f;
     [SerializeField] private float maxSpeed = 1.5f;
-    [SerializeField] private float acceleration = 1000f;
+    [SerializeField] private float acceleration = 1f;
     [SerializeField] private float deacceleration = 0.9f;
     [SerializeField] private float rotationSpeed = 600f;
     [SerializeField] public float timeBetweenAttack = 0.2f;
@@ -63,16 +63,16 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
 
-       
-        transform.Translate(moveDirection * moveSpeed * inputMagnitude * Time.deltaTime, Space.World);
+        //transform.Translate(moveDirection * moveSpeed * inputMagnitude * Time.deltaTime, Space.World);
 
         //Physics based movement https://answers.unity.com/questions/616195/how-to-make-an-object-go-the-direction-it-is-facin.html
-        if (Input.GetButton("Horizontal"))
+        if (Input.GetKey(KeyCode.W) && rb.velocity.magnitude < 1)
         {
-            moveSpeed += acceleration;
-            Debug.Log("Acceleration+\\" + moveSpeed + "moveDirection: " + moveDirection + "inputMagnitude: " + inputMagnitude);
+            //moveSpeed += acceleration;
+            
             //transform.Translate(moveDirection * moveSpeed * inputMagnitude * Time.deltaTime, Space.World);
-            rb.AddForce(moveDirection * acceleration);
+            rb.AddRelativeForce(moveDirection * moveSpeed);
+            Debug.Log("moveSpeed+\\" + moveSpeed + "moveDirection: " + moveDirection + "velocity: " + rb.velocity.magnitude);
 
         }
 

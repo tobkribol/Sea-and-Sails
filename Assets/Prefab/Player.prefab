@@ -258,9 +258,9 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1000
-  m_LinearDrag: 0
-  m_AngularDrag: 0.2
+  m_Mass: 500
+  m_LinearDrag: 1
+  m_AngularDrag: 1
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -295,10 +295,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b72d67bc7bbf0545919f47a16a44a38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1.5
-  rotationSpeed: 600
+  moveSpeed: 500
+  maxSpeed: 100
+  acceleration: 0.1
+  deacceleration: 0.9
+  rotationSpeed: 50
+  timeBetweenAttack: 0.4
   rb: {fileID: 7061844666675684001}
-  timeBetweenAttack: 0.2
   ProjectilePrefab: {fileID: 5013182278604835448, guid: 81d5a038f4ce43e4cb1696eda19744f9, type: 3}
   LaunchOffset: {fileID: 9103913139841384686}
   LaunchOffsetRight: {fileID: 4066295703896943843}
