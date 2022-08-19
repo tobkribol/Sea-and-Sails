@@ -26,4 +26,14 @@ public class Weapons : MonoBehaviour
 
     }
 
-}
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Cherry"))
+    //    {
+    //        collectionSoundEffect.Play();
+    //        Destroy(collision.gameObject);
+    //        Items.cherries += 2;
+    //        cherriesText.text = "Cherries: " + Items.cherries;
+    //        Debug.Log(Items.cherries);
+    //    }
+    //}

@@ -1,17 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
 
     // Variable player input
+    [SerializeField] private Text cannonballText; //need UnityEngine.UI
+    [SerializeField] private Text hotshotText; //need UnityEngine.UI
     [SerializeField] public float moveSpeed = 0f;
     [SerializeField] private float maxSpeed = 1.5f;
     [SerializeField] private float acceleration = 1f;
     [SerializeField] private float deacceleration = 0.9f;
     [SerializeField] private float rotationSpeed = 600f;
     [SerializeField] public float timeBetweenAttack = 0.2f;
+
+    [SerializeField] public int cannonballs = 10;
 
     [SerializeField] private Rigidbody2D rb;
 
@@ -40,11 +45,13 @@ public class PlayerMovement : MonoBehaviour
         //physics Calclulations
         Move();
 
-        if (Input.GetButton("Fire1") && !alreadyShooting)
+        if (Input.GetButton("Fire1") && !alreadyShooting && cannonballs > 0)
         {
             //SailHelthBarFunction.SetHealthBarValue(SailHelthBarFunction.GetHealthBarValue() - 0.25f);
             alreadyShooting = true;
             ShootCannonRight();
+            cannonballs -= 1;
+            cannonballText.text = "Cannonball: " + cannonballs;
         }
     }
 
