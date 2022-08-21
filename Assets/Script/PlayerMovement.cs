@@ -5,38 +5,51 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+    //class Input
+    public ProjectileBehaviour ProjectilePrefab;
+    Weapons weapons;
+
 
     // Variable player input
-    [SerializeField] private Text cannonballText; //need UnityEngine.UI
-    [SerializeField] private Text hotshotText; //need UnityEngine.UI
-    [SerializeField] public float moveSpeed = 0f;
+    [SerializeField] public float moveSpeed = 10f;
     [SerializeField] private float maxSpeed = 1.5f;
     [SerializeField] private float acceleration = 1f;
     [SerializeField] private float deacceleration = 0.9f;
     [SerializeField] private float rotationSpeed = 600f;
-    [SerializeField] public float timeBetweenAttack = 0.2f;
+    [SerializeField] public float timeBetweenAttack = 0.15f;
+    
 
-    [SerializeField] public int cannonballs = 10;
+    //Inventory
+    [SerializeField] public int numberOfGuns = 24;
+    [SerializeField] public int cannonballs = 25;
+    [SerializeField] private Text cannonballText; //need UnityEngine.UI
+    [SerializeField] private Text hotshotText; //need UnityEngine.UI
 
+    //Standard
     [SerializeField] private Rigidbody2D rb;
-
-    public ProjectileBehaviour ProjectilePrefab;
-    public Transform LaunchOffset;
-
-    public GameObject LaunchOffsetRight;
+    
+    public Transform LaunchOffsetRight1;
+    public Transform LaunchOffsetRight2;
+    public Transform LaunchOffsetLeft1;
+    public Transform LaunchOffsetLeft2;
+    //public GameObject LaunchOffsetRightRow;
+    //public GameObject LaunchOffsetLeftRow;
+    public bool shootSide = true;
 
     bool alreadyShooting = false;
-
     float inputMagnitude;
+    public Vector2 moveDirection;
 
 
-    private Vector2 moveDirection;
 
-    // Update is called once per frame
     void Update()
     {
         //process input
         ProcessInputs();
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            GetCannonSide();
+        }
 
     }
 
@@ -44,12 +57,22 @@ public class PlayerMovement : MonoBehaviour
     {
         //physics Calclulations
         Move();
+        //Debug.Log("moveSpeed+\\" + moveSpeed + "moveDirection: " + moveDirection + "velocity: " + rb.velocity.magnitude);
 
         if (Input.GetButton("Fire1") && !alreadyShooting && cannonballs > 0)
         {
-            //SailHelthBarFunction.SetHealthBarValue(SailHelthBarFunction.GetHealthBarValue() - 0.25f);
             alreadyShooting = true;
-            ShootCannonRight();
+
+            switch (shootSide)
+            {
+                case true:
+                    ShootCannonRight();
+                    break;
+                case false:
+                    ShootCannonLeft();
+                    break;
+
+            }
             cannonballs -= 1;
             cannonballText.text = "Cannonball: " + cannonballs;
         }
@@ -65,45 +88,31 @@ public class PlayerMovement : MonoBehaviour
 
         inputMagnitude = Mathf.Clamp01(moveDirection.magnitude);
         moveDirection.Normalize();
+
     }
 
     private void Move()
     {
 
         //transform.Translate(moveDirection * moveSpeed * inputMagnitude * Time.deltaTime, Space.World);
-
-        //Physics based movement https://answers.unity.com/questions/616195/how-to-make-an-object-go-the-direction-it-is-facin.html
-        if (Input.GetKey(KeyCode.W) && rb.velocity.magnitude < 1)
+        if (rb.velocity.magnitude < maxSpeed)
         {
-            //moveSpeed += acceleration;
-            
-            //transform.Translate(moveDirection * moveSpeed * inputMagnitude * Time.deltaTime, Space.World);
-            rb.AddRelativeForce(moveDirection * moveSpeed);
-            Debug.Log("moveSpeed+\\" + moveSpeed + "moveDirection: " + moveDirection + "velocity: " + rb.velocity.magnitude);
-
+            rb.AddRelativeForce(moveDirection * moveSpeed); //Physics based movement
+            //https://answers.unity.com/questions/616195/how-to-make-an-object-go-the-direction-it-is-facin.html
         }
 
-        //else if ((Input.GetButton("Vertical") || Input.GetButton("Horizontal")) && moveSpeed == maxSpeed)
-        //{
-        //    Debug.Log("Acceleration+\\" + moveSpeed + "moveDirection: " + moveDirection + "inputMagnitude: " + inputMagnitude);
-        //    transform.Translate(moveDirection * moveSpeed * inputMagnitude * Time.deltaTime, Space.World);
-        //}
-        ////Deacceleration 
-        //else if (moveSpeed > 0)
-        //{
-        //    moveSpeed += -deacceleration;
-        //    //inputMagnitude = 1;
-        //    Debug.Log("Deacceleration-//" + moveSpeed + "moveDirection: " + moveDirection + "inputMagnitude: " + inputMagnitude);
-        //}
-
-        //else
-        //{
-        //    transform.Translate(moveDirection * moveSpeed * inputMagnitude * Time.deltaTime, Space.World);
-        //}
-
-
-        //Move command
+        //moveSpeed += acceleration;
         //transform.Translate(moveDirection * moveSpeed * inputMagnitude * Time.deltaTime, Space.World);
+        
+        if (Input.GetKeyDown(KeyCode.W) && moveSpeed < 1000)
+        {
+            moveSpeed += 250;
+        }
+
+        else if (Input.GetKeyDown(KeyCode.S) && moveSpeed > 0)
+        {
+            moveSpeed -= 250;
+        }
 
         if (moveDirection != Vector2.zero)
         {
@@ -115,28 +124,64 @@ public class PlayerMovement : MonoBehaviour
     private void ShootCannonRight()
     {
         
-        GameObject[] rightCannonSpawn = GameObject.FindGameObjectsWithTag("RightBulletSpawn");
+        for (int i = 0; i < numberOfGuns; i++) //Weapons.numberOfGuns
+        {
+            Vector2 v = LaunchOffsetRight2.position - LaunchOffsetRight1.position;
+            Vector2 launchOffsetPositon = (Vector2)LaunchOffsetRight1.position + (Random.value * v);
 
-        //foreach (var _rightCannonSpawnPoint in rightCannonSpawn)
+            Instantiate(ProjectilePrefab, launchOffsetPositon, transform.rotation);
+        }
+
+        //Instantiate(ProjectilePrefab, LaunchOffsetRight.position, transform.rotation);
+
+        //GameObject[] rightCannonSpawn = GameObject.FindGameObjectsWithTag("RightBulletSpawn");
+        //foreach (rightCannonSpawnPoint in rightCannonSpawn)
         //{
 
-        //    var bulletInstance = Instantiate(ProjectilePrefab, _rightCannonSpawnPoint.transform.position, _rightCannonSpawnPoint.transform.rotation);
-        //    Debug.Log(_rightCannonSpawnPoint);
-
-        //    //Destroy(bulletInstance, 3.0f);
-
+        //    Instantiate(ProjectilePrefab, rightCannonSpawnPoint.transform.position, transform.rotation);
+        //    Debug.Log(rightCannonSpawnPoint);
         //}
 
-        Instantiate(ProjectilePrefab, LaunchOffset.position, transform.rotation);
         Invoke(nameof(ResetAttack), timeBetweenAttack);
         //Debug.Log(ProjectilePrefab + " :/: " + LaunchOffset.position + " :/: " + transform.rotation);
 
     }
+
+    private void ShootCannonLeft()
+    {
+
+        for (int i = 0; i < numberOfGuns; i++) //Weapons.numberOfGuns
+        {
+
+            Vector2 v = LaunchOffsetLeft2.position - LaunchOffsetLeft1.position;
+            Vector2 launchOffsetPositon = (Vector2)LaunchOffsetLeft1.position + (Random.value * v);
+
+            Instantiate(ProjectilePrefab, launchOffsetPositon, transform.rotation);
+        }
+
+        Invoke(nameof(ResetAttack), timeBetweenAttack);
+        //Debug.Log(ProjectilePrefab + " :/: " + LaunchOffset.position + " :/: " + transform.rotation);
+
+    }
+
+
 
     public void ResetAttack()
     {
         alreadyShooting = false;
     }
 
+    public void GetCannonSide()
+    {
+        if (shootSide == true)
+        {
+            shootSide = false;
+        }
+        else
+        {
+            shootSide = true;
+        }
+        Debug.Log("Shootside: " + shootSide);
+    }
 }
 
