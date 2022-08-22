@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     //class Input
-    public ProjectileBehaviour ProjectilePrefab;
+    public ProjectileBehaviour [] ProjectilePrefabCannonball;
+    public GameObject PlayerPrefabHotShot;
     Weapons weapons;
 
 
@@ -22,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     //Inventory
     [SerializeField] public int numberOfGuns = 24;
     [SerializeField] public int cannonballs = 25;
+    public int ammoType = 0;
     [SerializeField] private Text cannonballText; //need UnityEngine.UI
     [SerializeField] private Text hotshotText; //need UnityEngine.UI
 
@@ -129,7 +131,7 @@ public class PlayerMovement : MonoBehaviour
             Vector2 v = LaunchOffsetRight2.position - LaunchOffsetRight1.position;
             Vector2 launchOffsetPositon = (Vector2)LaunchOffsetRight1.position + (Random.value * v);
 
-            Instantiate(ProjectilePrefab, launchOffsetPositon, transform.rotation);
+            Instantiate(ProjectilePrefabCannonball[0], launchOffsetPositon, transform.rotation);
         }
 
         //Instantiate(ProjectilePrefab, LaunchOffsetRight.position, transform.rotation);
@@ -156,7 +158,7 @@ public class PlayerMovement : MonoBehaviour
             Vector2 v = LaunchOffsetLeft2.position - LaunchOffsetLeft1.position;
             Vector2 launchOffsetPositon = (Vector2)LaunchOffsetLeft1.position + (Random.value * v);
 
-            Instantiate(ProjectilePrefab, launchOffsetPositon, transform.rotation);
+            Instantiate(ProjectilePrefabCannonball[1], launchOffsetPositon, transform.rotation);
         }
 
         Invoke(nameof(ResetAttack), timeBetweenAttack);
@@ -174,6 +176,19 @@ public class PlayerMovement : MonoBehaviour
     public void GetCannonSide()
     {
         if (shootSide == true)
+        {
+            shootSide = false;
+        }
+        else
+        {
+            shootSide = true;
+        }
+        Debug.Log("Shootside: " + shootSide);
+    }
+
+    public void AmmoType()
+    {
+        if (ammoType == 0)
         {
             shootSide = false;
         }

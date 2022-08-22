@@ -804,23 +804,23 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 2055761401}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3546259860334063553, guid: 749d08c177c7aa5478a64a17b071c49e, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3546259860334063553, guid: 749d08c177c7aa5478a64a17b071c49e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.070163
+      value: 6.6111526
       objectReference: {fileID: 0}
     - target: {fileID: 3546259860334063553, guid: 749d08c177c7aa5478a64a17b071c49e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.5859294
+      value: -3.3710375
       objectReference: {fileID: 0}
     - target: {fileID: 3546259860334063553, guid: 749d08c177c7aa5478a64a17b071c49e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.06909161
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3546259860334063553, guid: 749d08c177c7aa5478a64a17b071c49e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -854,17 +854,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cannonball32x32_HotShot
       objectReference: {fileID: 0}
-    - target: {fileID: 5013182278604835448, guid: 749d08c177c7aa5478a64a17b071c49e, type: 3}
-      propertyPath: destroyTime
-      value: 0.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 749d08c177c7aa5478a64a17b071c49e, type: 3}
---- !u!4 &544521913 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3546259860334063553, guid: 749d08c177c7aa5478a64a17b071c49e, type: 3}
-  m_PrefabInstance: {fileID: 544521912}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &550761308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4396743461872800622, guid: 79e33016735feb343b395775a3226c23, type: 3}
@@ -2820,7 +2811,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 544521913}
   - {fileID: 855845391}
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -3040,6 +3030,18 @@ PrefabInstance:
       propertyPath: LaunchOffsetRight2
       value: 
       objectReference: {fileID: 934433409}
+    - target: {fileID: 7061844666675684002, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: ProjectilePrefabCannonball.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7061844666675684002, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: ProjectilePrefabCannonball.Array.data[0]
+      value: 
+      objectReference: {fileID: 5013182278604835448, guid: 81d5a038f4ce43e4cb1696eda19744f9, type: 3}
+    - target: {fileID: 7061844666675684002, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: ProjectilePrefabCannonball.Array.data[1]
+      value: 
+      objectReference: {fileID: 5013182278604835448, guid: 749d08c177c7aa5478a64a17b071c49e, type: 3}
     - target: {fileID: 7061844666675684003, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
       propertyPath: m_RootOrder
       value: 3

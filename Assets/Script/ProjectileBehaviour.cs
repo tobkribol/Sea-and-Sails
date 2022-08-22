@@ -44,9 +44,9 @@ public class ProjectileBehaviour : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            SailHelthBarFunction.SetHealthBarValue(SailHelthBarFunction.GetHealthBarValue() - 0.25f);
+            //SailHelthBarFunction.SetHealthBarValue(SailHelthBarFunction.GetHealthBarValue() - 0.25f);
+            //PlayerLifeScript.SetHealthAnimationValue(); //Testing
             Destroy(collision.gameObject);
-            PlayerLifeScript.SetHealthAnimationValue(); //Testing
             Destroy(gameObject);
         }
 
