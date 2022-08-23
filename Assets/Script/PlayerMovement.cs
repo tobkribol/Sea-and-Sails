@@ -6,41 +6,43 @@ using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     //class Input
-    public ProjectileBehaviour [] ProjectilePrefabCannonball;
-    public GameObject PlayerPrefabHotShot;
+    
     Weapons weapons;
 
 
     // Variable player input
-    [SerializeField] public float moveSpeed = 10f;
+    [Header("Ship stats")]
+    [HideInInspector] public float moveSpeed = 10f;
     [SerializeField] private float maxSpeed = 1.5f;
     [SerializeField] private float acceleration = 1f;
     [SerializeField] private float deacceleration = 0.9f;
     [SerializeField] private float rotationSpeed = 600f;
     [SerializeField] public float timeBetweenAttack = 0.15f;
-    
+
 
     //Inventory
+    [Header("Ship Inventory")]
     [SerializeField] public int numberOfGuns = 24;
     [SerializeField] public int cannonballs = 25;
-    public int ammoType = 0;
-    [SerializeField] private Text cannonballText; //need UnityEngine.UI
-    [SerializeField] private Text hotshotText; //need UnityEngine.UI
+    [SerializeField] private ProjectileBehaviour[] ProjectilePrefab;
 
-    //Standard
-    [SerializeField] private Rigidbody2D rb;
-    
+    //Standard  
+    [Header("Inputdata")]
     public Transform LaunchOffsetRight1;
     public Transform LaunchOffsetRight2;
     public Transform LaunchOffsetLeft1;
     public Transform LaunchOffsetLeft2;
-    //public GameObject LaunchOffsetRightRow;
-    //public GameObject LaunchOffsetLeftRow;
-    public bool shootSide = true;
+    [SerializeField] private Rigidbody2D rb;
+
+    [Header("Canvas Data")]
+    [SerializeField] private Text cannonballText; //need UnityEngine.UI
+    [SerializeField] private Text hotshotText; //need UnityEngine.UI
+    [HideInInspector] public bool shootSide = true;
+    private int ammoType = 0;
 
     bool alreadyShooting = false;
     float inputMagnitude;
-    public Vector2 moveDirection;
+    [HideInInspector] public Vector2 moveDirection;
 
 
 
@@ -48,10 +50,6 @@ public class PlayerMovement : MonoBehaviour
     {
         //process input
         ProcessInputs();
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            GetCannonSide();
-        }
 
     }
 
@@ -82,15 +80,27 @@ public class PlayerMovement : MonoBehaviour
 
     void ProcessInputs()
     {
+        //movement
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
-
-
         moveDirection = new Vector2(moveX, moveY);
-
         inputMagnitude = Mathf.Clamp01(moveDirection.magnitude);
         moveDirection.Normalize();
 
+        //Weapon
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            ammoType = 0;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            ammoType = 1;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            GetCannonSide();
+        }
     }
 
     private void Move()
@@ -126,27 +136,15 @@ public class PlayerMovement : MonoBehaviour
     private void ShootCannonRight()
     {
         
-        for (int i = 0; i < numberOfGuns; i++) //Weapons.numberOfGuns
+        for (int i = 0; i < numberOfGuns; i++)
         {
             Vector2 v = LaunchOffsetRight2.position - LaunchOffsetRight1.position;
             Vector2 launchOffsetPositon = (Vector2)LaunchOffsetRight1.position + (Random.value * v);
 
-            Instantiate(ProjectilePrefabCannonball[0], launchOffsetPositon, transform.rotation);
+            Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
         }
 
-        //Instantiate(ProjectilePrefab, LaunchOffsetRight.position, transform.rotation);
-
-        //GameObject[] rightCannonSpawn = GameObject.FindGameObjectsWithTag("RightBulletSpawn");
-        //foreach (rightCannonSpawnPoint in rightCannonSpawn)
-        //{
-
-        //    Instantiate(ProjectilePrefab, rightCannonSpawnPoint.transform.position, transform.rotation);
-        //    Debug.Log(rightCannonSpawnPoint);
-        //}
-
         Invoke(nameof(ResetAttack), timeBetweenAttack);
-        //Debug.Log(ProjectilePrefab + " :/: " + LaunchOffset.position + " :/: " + transform.rotation);
-
     }
 
     private void ShootCannonLeft()
@@ -158,12 +156,10 @@ public class PlayerMovement : MonoBehaviour
             Vector2 v = LaunchOffsetLeft2.position - LaunchOffsetLeft1.position;
             Vector2 launchOffsetPositon = (Vector2)LaunchOffsetLeft1.position + (Random.value * v);
 
-            Instantiate(ProjectilePrefabCannonball[1], launchOffsetPositon, transform.rotation);
+            Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
         }
 
         Invoke(nameof(ResetAttack), timeBetweenAttack);
-        //Debug.Log(ProjectilePrefab + " :/: " + LaunchOffset.position + " :/: " + transform.rotation);
-
     }
 
 
@@ -176,19 +172,6 @@ public class PlayerMovement : MonoBehaviour
     public void GetCannonSide()
     {
         if (shootSide == true)
-        {
-            shootSide = false;
-        }
-        else
-        {
-            shootSide = true;
-        }
-        Debug.Log("Shootside: " + shootSide);
-    }
-
-    public void AmmoType()
-    {
-        if (ammoType == 0)
         {
             shootSide = false;
         }

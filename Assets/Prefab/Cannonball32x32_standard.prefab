@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b998a1db32ff6e4e86c937ff6098571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  destroyTime: 5
+  speed: 2
+  destroyTime: 2
   rb: {fileID: 3546259860334063554}
   Player: {fileID: 0}
