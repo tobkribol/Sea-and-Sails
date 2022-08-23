@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Variable player input
     [Header("Ship stats")]
-    [HideInInspector] public float moveSpeed = 10f;
+    [HideInInspector] public float moveSpeed = 0.0f;
     [SerializeField] private float maxSpeed = 1.5f;
     [SerializeField] private float acceleration = 1f;
     [SerializeField] private float deacceleration = 0.9f;
@@ -50,14 +50,18 @@ public class PlayerMovement : MonoBehaviour
     {
         //process input
         ProcessInputs();
+        if (rb.velocity.magnitude < maxSpeed)
+        {
+            rb.AddRelativeForce(transform.up * moveSpeed); //Physics based movement
+            //https://answers.unity.com/questions/616195/how-to-make-an-object-go-the-direction-it-is-facin.html
+        }
 
     }
 
     private void FixedUpdate()
     {
-        //physics Calclulations
+        //Move command
         Move();
-        //Debug.Log("moveSpeed+\\" + moveSpeed + "moveDirection: " + moveDirection + "velocity: " + rb.velocity.magnitude);
 
         if (Input.GetButton("Fire1") && !alreadyShooting && cannonballs > 0)
         {
@@ -105,32 +109,38 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-
-        //transform.Translate(moveDirection * moveSpeed * inputMagnitude * Time.deltaTime, Space.World);
-        if (rb.velocity.magnitude < maxSpeed)
-        {
-            rb.AddRelativeForce(moveDirection * moveSpeed); //Physics based movement
-            //https://answers.unity.com/questions/616195/how-to-make-an-object-go-the-direction-it-is-facin.html
-        }
-
-        //moveSpeed += acceleration;
-        //transform.Translate(moveDirection * moveSpeed * inputMagnitude * Time.deltaTime, Space.World);
-        
+                
+        //Move input
         if (Input.GetKeyDown(KeyCode.W) && moveSpeed < 1000)
         {
-            moveSpeed += 250;
+            moveSpeed += 50;
+        }
+        
+        if (Input.GetKeyDown(KeyCode.S) && moveSpeed > 0)
+        {
+            moveSpeed -= 50;
         }
 
-        else if (Input.GetKeyDown(KeyCode.S) && moveSpeed > 0)
+        //Rortation
+        if (Input.GetKey(KeyCode.A))
         {
-            moveSpeed -= 250;
+            Vector3 rotationToAdd = new Vector3(0, 0, 1);
+            transform.Rotate(rotationToAdd);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            Vector3 rotationToAdd = new Vector3(0, 0, -1);
+            transform.Rotate(rotationToAdd);
         }
 
-        if (moveDirection != Vector2.zero)
-        {
-            Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, moveDirection);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-        }
+
+        //Old rotation
+        //if (moveDirection != Vector2.zero)
+        //{
+        //    Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, moveDirection);
+
+        //    transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+        //}
     }
 
     private void ShootCannonRight()
