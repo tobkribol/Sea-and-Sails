@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class ProjectileBehaviour : MonoBehaviour
 {
-    //Inputdata 
+    //Inputdata
+    [SerializeField] public float shootForce = 4f;
+    [SerializeField] public float shootForceSpread = 1f;
     [SerializeField] float speed = 12f;
     [SerializeField] float destroyTime = 0.35f;
     [SerializeField] private Rigidbody2D rb;
@@ -14,7 +16,7 @@ public class ProjectileBehaviour : MonoBehaviour
     public GameObject Player;
     PlayerLife PlayerLifeScript;
     PlayerMovement PlayerMovement;
-    [SerializeField] private Text killText; //need UnityEngine.UI
+    [SerializeField] public Text killText; //need UnityEngine.UI
 
 
     // Update is called once per frame
@@ -29,11 +31,11 @@ public class ProjectileBehaviour : MonoBehaviour
 
         if (PlayerMovement.shootSide)
         {
-            rb.AddForce(projectileDirection * (4 + (Random.value * 2)), ForceMode2D.Impulse);
+            rb.AddForce(projectileDirection * (shootForce + (Random.Range(-shootForceSpread / 2, shootForceSpread / 2))), ForceMode2D.Impulse);
         }
         else
         {
-            rb.AddForce(-projectileDirection * (4 + (Random.value * 2)), ForceMode2D.Impulse);
+            rb.AddForce(-projectileDirection * (shootForce + (Random.Range(-shootForceSpread / 2, shootForceSpread / 2))), ForceMode2D.Impulse);
         }
     }
 
@@ -51,7 +53,7 @@ public class ProjectileBehaviour : MonoBehaviour
             Destroy(collision.gameObject);
             PlayerLifeScript.killCount += 1;
             Debug.Log("Kills: " + PlayerLifeScript.killCount);
-            killText.text = "Kills: " + PlayerLifeScript.killCount; //Not displaying 
+            //killText.text = "Kills: " + PlayerLifeScript.killCount.ToString(); //Not displaying 
             Destroy(gameObject);
         }
 

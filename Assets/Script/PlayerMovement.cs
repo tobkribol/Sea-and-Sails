@@ -16,14 +16,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxSpeed = 1.5f;
     [SerializeField] private float acceleration = 1f;
     [SerializeField] private float deacceleration = 0.9f;
-    [SerializeField] private float rotationSpeed = 600f;
+    [SerializeField] private float rotationSpeed = 1f;
     [SerializeField] public float timeBetweenAttack = 0.15f;
 
 
     //Inventory
     [Header("Ship Inventory")]
     [SerializeField] public int numberOfGuns = 24;
-    [SerializeField] public int cannonballs = 200;
+    [SerializeField] public int ammoCannonball = 200;
+    [SerializeField] public int ammoHotshot = 200;
     [SerializeField] private ProjectileBehaviour[] ProjectilePrefab;
 
     //Standard  
@@ -35,8 +36,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
 
     [Header("Canvas Data")]
-    [SerializeField] private Text cannonballText; //need UnityEngine.UI
-    [SerializeField] private Text hotshotText; //need UnityEngine.UI
+    [SerializeField] private Text[] ammoText; //need UnityEngine.UI
     [HideInInspector] public bool shootSide = true;
     private int ammoType = 0;
 
@@ -45,7 +45,10 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public Vector2 moveDirection;
 
 
+    private void Start()
+    {
 
+    }
     void Update()
     {
         ProcessInputs();
@@ -54,8 +57,11 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
-        FireCannon();
 
+        if (Input.GetButton("Fire1"))
+        {
+            FireCannon();
+        }
     }
 
     void ProcessInputs()
@@ -105,12 +111,12 @@ public class PlayerMovement : MonoBehaviour
         //Rortation
         if (Input.GetKey(KeyCode.A))
         {
-            Vector3 rotationToAdd = new Vector3(0, 0, 1);
+            Vector3 rotationToAdd = new Vector3(0, 0, rotationSpeed);
             transform.Rotate(rotationToAdd);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            Vector3 rotationToAdd = new Vector3(0, 0, -1);
+            Vector3 rotationToAdd = new Vector3(0, 0, -rotationSpeed);
             transform.Rotate(rotationToAdd);
         }
 
@@ -126,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FireCannon()
     {
-        if (Input.GetButton("Fire1") && !alreadyShooting && cannonballs > 0)
+        if (!alreadyShooting && (ammoCannonball > 0 && ammoType == 0))
         {
             alreadyShooting = true;
 
@@ -138,10 +144,29 @@ public class PlayerMovement : MonoBehaviour
                 case false:
                     ShootCannonLeft();
                     break;
-
             }
-            cannonballs -= numberOfGuns/2;
-            cannonballText.text = "Cannonball: " + cannonballs;
+
+            ammoCannonball -= numberOfGuns / 2;
+            ammoText[ammoType].text = "Cannonball: " + ammoCannonball;
+
+        }
+        else if (!alreadyShooting && (ammoHotshot > 0 && ammoType == 1))
+        {
+            alreadyShooting = true;
+
+            switch (shootSide)
+            {
+                case true:
+                    ShootCannonRight();
+                    break;
+                case false:
+                    ShootCannonLeft();
+                    break;
+            }
+
+            ammoHotshot -= numberOfGuns / 2;
+            ammoText[ammoType].text = "Hotshot: " + ammoHotshot;
+
         }
     }
 
@@ -150,8 +175,8 @@ public class PlayerMovement : MonoBehaviour
         
         for (int i = 0; i < numberOfGuns; i++)
         {
-            Vector2 v = LaunchOffsetRight2.position - LaunchOffsetRight1.position;
-            Vector2 launchOffsetPositon = (Vector2)LaunchOffsetRight1.position + (Random.value * v);
+            Vector2 v = LaunchOffsetRight2.position - LaunchOffsetRight1.position; //find vector between two sides
+            Vector2 launchOffsetPositon = (Vector2)LaunchOffsetRight1.position + (Random.value * v); //pick random position along ship side
 
             Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
         }
@@ -165,8 +190,8 @@ public class PlayerMovement : MonoBehaviour
         for (int i = 0; i < numberOfGuns; i++) //Weapons.numberOfGuns
         {
 
-            Vector2 v = LaunchOffsetLeft2.position - LaunchOffsetLeft1.position;
-            Vector2 launchOffsetPositon = (Vector2)LaunchOffsetLeft1.position + (Random.value * v);
+            Vector2 v = LaunchOffsetLeft2.position - LaunchOffsetLeft1.position; //find vector between two sides
+            Vector2 launchOffsetPositon = (Vector2)LaunchOffsetLeft1.position + (Random.value * v); //pick random position along ship side
 
             Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
         }
