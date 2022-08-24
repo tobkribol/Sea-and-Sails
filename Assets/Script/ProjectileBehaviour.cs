@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ProjectileBehaviour : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class ProjectileBehaviour : MonoBehaviour
     public GameObject Player;
     PlayerLife PlayerLifeScript;
     PlayerMovement PlayerMovement;
+    [SerializeField] private Text killText; //need UnityEngine.UI
 
 
     // Update is called once per frame
@@ -35,11 +37,11 @@ public class ProjectileBehaviour : MonoBehaviour
         }
     }
 
-
     void Update()
     {
         Destroy(gameObject, destroyTime); //Destroy if it does not hit anything
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
@@ -47,6 +49,9 @@ public class ProjectileBehaviour : MonoBehaviour
             //SailHelthBarFunction.SetHealthBarValue(SailHelthBarFunction.GetHealthBarValue() - 0.25f);
             //PlayerLifeScript.SetHealthAnimationValue(); //Testing
             Destroy(collision.gameObject);
+            PlayerLifeScript.killCount += 1;
+            Debug.Log("Kills: " + PlayerLifeScript.killCount);
+            killText.text = "Kills: " + PlayerLifeScript.killCount; //Not displaying 
             Destroy(gameObject);
         }
 

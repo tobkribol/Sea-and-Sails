@@ -40,17 +40,9 @@ public class SailHelthBarFunction : MonoBehaviour
         return HealthBarImage.fillAmount;
     }
 
-    /// <summary>
-    /// Sets the health bar color
-    /// </summary>
-    /// <param name="healthColor">Color </param>
     public static void SetHealthBarColor(Color healthColor)
     {
         HealthBarImage.color = healthColor;
     }
-
-    /// <summary>
-    /// Initialize the variable
-    /// </summary>
 
 }

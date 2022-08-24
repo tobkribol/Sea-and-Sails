@@ -140,3 +140,4 @@ MonoBehaviour:
   destroyTime: 2
   rb: {fileID: 3546259860334063554}
   Player: {fileID: 0}
+  killText: {fileID: 0}

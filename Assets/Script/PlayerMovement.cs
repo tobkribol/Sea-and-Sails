@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     //Inventory
     [Header("Ship Inventory")]
     [SerializeField] public int numberOfGuns = 24;
-    [SerializeField] public int cannonballs = 25;
+    [SerializeField] public int cannonballs = 200;
     [SerializeField] private ProjectileBehaviour[] ProjectilePrefab;
 
     //Standard  
@@ -48,48 +48,35 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        //process input
         ProcessInputs();
-        if (rb.velocity.magnitude < maxSpeed)
-        {
-            rb.AddRelativeForce(transform.up * moveSpeed); //Physics based movement
-            //https://answers.unity.com/questions/616195/how-to-make-an-object-go-the-direction-it-is-facin.html
-        }
-
     }
 
     private void FixedUpdate()
     {
-        //Move command
         Move();
+        FireCannon();
 
-        if (Input.GetButton("Fire1") && !alreadyShooting && cannonballs > 0)
-        {
-            alreadyShooting = true;
-
-            switch (shootSide)
-            {
-                case true:
-                    ShootCannonRight();
-                    break;
-                case false:
-                    ShootCannonLeft();
-                    break;
-
-            }
-            cannonballs -= 1;
-            cannonballText.text = "Cannonball: " + cannonballs;
-        }
     }
 
     void ProcessInputs()
     {
-        //movement
-        float moveX = Input.GetAxis("Horizontal");
-        float moveY = Input.GetAxis("Vertical");
-        moveDirection = new Vector2(moveX, moveY);
-        inputMagnitude = Mathf.Clamp01(moveDirection.magnitude);
-        moveDirection.Normalize();
+        //Move input
+        if (Input.GetKeyDown(KeyCode.W) && moveSpeed < 1000)
+        {
+            moveSpeed += 50;
+        }
+
+        if (Input.GetKeyDown(KeyCode.S) && moveSpeed > 0)
+        {
+            moveSpeed -= 50;
+        }
+
+        ////movement
+        //float moveX = Input.GetAxis("Horizontal");
+        //float moveY = Input.GetAxis("Vertical");
+        //moveDirection = new Vector2(moveX, moveY);
+        //inputMagnitude = Mathf.Clamp01(moveDirection.magnitude);
+        //moveDirection.Normalize();
 
         //Weapon
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -109,16 +96,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-                
-        //Move input
-        if (Input.GetKeyDown(KeyCode.W) && moveSpeed < 1000)
+        if (rb.velocity.magnitude < maxSpeed)
         {
-            moveSpeed += 50;
-        }
-        
-        if (Input.GetKeyDown(KeyCode.S) && moveSpeed > 0)
-        {
-            moveSpeed -= 50;
+            rb.AddRelativeForce(transform.up * moveSpeed); //Physics based movement
+            //https://answers.unity.com/questions/616195/how-to-make-an-object-go-the-direction-it-is-facin.html
         }
 
         //Rortation
@@ -141,6 +122,27 @@ public class PlayerMovement : MonoBehaviour
 
         //    transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
         //}
+    }
+
+    private void FireCannon()
+    {
+        if (Input.GetButton("Fire1") && !alreadyShooting && cannonballs > 0)
+        {
+            alreadyShooting = true;
+
+            switch (shootSide)
+            {
+                case true:
+                    ShootCannonRight();
+                    break;
+                case false:
+                    ShootCannonLeft();
+                    break;
+
+            }
+            cannonballs -= numberOfGuns/2;
+            cannonballText.text = "Cannonball: " + cannonballs;
+        }
     }
 
     private void ShootCannonRight()
@@ -171,8 +173,6 @@ public class PlayerMovement : MonoBehaviour
 
         Invoke(nameof(ResetAttack), timeBetweenAttack);
     }
-
-
 
     public void ResetAttack()
     {

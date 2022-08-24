@@ -9,7 +9,7 @@ public class PlayerLife : MonoBehaviour
     private Animator anim;
     private PlayerMovement move;
     //private Animation animation;
-
+    public int killCount = 0;
     [SerializeField] private float playerHealth = 1.0f;
     
     //private float health = SailHelthBarFunction.GetHealthBarValue();
