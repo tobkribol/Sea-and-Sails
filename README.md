@@ -1,7 +1,7 @@
 # Sea-and-Sails
  basic pixel 2d game dev
 
-![image](https://user-images.githubusercontent.com/79943730/183281334-fa23020f-464b-426a-a6ac-780384cadcb8.png)
+![image](https://user-images.githubusercontent.com/79943730/186738123-6865f7d9-9abc-4844-be80-3ab8e08e9d2f.png)
 
 ##Implementatons:
 Enemy AI - https://forum.unity.com/threads/simple-spaceship-movement-ai-2d.387648/
