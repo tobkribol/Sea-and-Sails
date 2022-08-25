@@ -56,7 +56,6 @@ public class PlayerMovement : MonoBehaviour
     {
         ProcessInputs();
     }
-
     private void FixedUpdate()
     {
         Move();
@@ -68,7 +67,6 @@ public class PlayerMovement : MonoBehaviour
             FireCannon();
         }
     }
-
     void ProcessInputs()
     {
         //Move input
@@ -81,13 +79,6 @@ public class PlayerMovement : MonoBehaviour
         {
             moveSpeed -= 50;
         }
-
-        ////movement
-        //float moveX = Input.GetAxis("Horizontal");
-        //float moveY = Input.GetAxis("Vertical");
-        //moveDirection = new Vector2(moveX, moveY);
-        //inputMagnitude = Mathf.Clamp01(moveDirection.magnitude);
-        //moveDirection.Normalize();
 
         //Weapon
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -106,7 +97,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-
     private void Move()
     {
 
@@ -128,60 +118,52 @@ public class PlayerMovement : MonoBehaviour
             Vector3 rotationToAdd = new Vector3(0, 0, -rotationSpeed);
             transform.Rotate(rotationToAdd);
         }
-
-
-        //Old rotation
-        //if (moveDirection != Vector2.zero)
-        //{
-        //    Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, moveDirection);
-
-        //    transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-        //}
     }
-
     private void FireCannon()
     {
-        if (!alreadyShooting && (ammoCannonball > 0 && ammoType == 0))
+        int numberOfGunsSide = numberOfGuns / 2;
+        switch (ammoType)
         {
-            alreadyShooting = true;
+            case 0:
+                if (!alreadyShooting && (ammoCannonball > numberOfGunsSide))
+                {
+                    FireCannonSide(numberOfGunsSide);
+                    alreadyShooting = true;
+                    ammoCannonball -= numberOfGunsSide;
+                    ammoText[ammoType].text = "Cannonball: " + ammoCannonball;
 
-            switch (shootSide)
-            {
-                case true:
-                    ShootCannonRight();
-                    break;
-                case false:
-                    ShootCannonLeft();
-                    break;
-            }
+                }
+                else if (!alreadyShooting && (ammoCannonball > 0))
+                {
+                    FireCannonSide(ammoCannonball);
+                    alreadyShooting = true;
+                    ammoCannonball -= ammoCannonball;
+                    ammoText[ammoType].text = "Cannonball: " + ammoCannonball;
+                }
+                break;
 
-            ammoCannonball -= numberOfGuns / 2;
-            ammoText[ammoType].text = "Cannonball: " + ammoCannonball;
-
-        }
-        else if (!alreadyShooting && (ammoHotshot > 0 && ammoType == 1))
-        {
-            alreadyShooting = true;
-
-            switch (shootSide)
-            {
-                case true:
-                    ShootCannonRight();
-                    break;
-                case false:
-                    ShootCannonLeft();
-                    break;
-            }
-
-            ammoHotshot -= numberOfGuns / 2;
-            ammoText[ammoType].text = "Hotshot: " + ammoHotshot;
-
+            case 1:
+                if (!alreadyShooting && (ammoHotshot > numberOfGunsSide))
+                {
+                    FireCannonSide(numberOfGunsSide);
+                    alreadyShooting = true;
+                    ammoHotshot -= numberOfGunsSide;
+                    ammoText[ammoType].text = "Hotshot: " + ammoHotshot;
+                }
+                else if (!alreadyShooting && (ammoHotshot > 0))
+                {
+                    FireCannonSide(ammoHotshot);
+                    alreadyShooting = true;
+                    ammoHotshot -= ammoHotshot;
+                    ammoText[ammoType].text = "Hotshot: " + ammoHotshot;
+                }
+                break;
         }
     }
-    private void ShootCannonRight()
+    private void ShootCannonRight(int numberOfRounds)
     {
         
-        for (int i = 0; i < numberOfGuns; i++)
+        for (int i = 0; i < numberOfRounds; i++)
         {
             Vector2 v = LaunchOffsetRight2.position - LaunchOffsetRight1.position; //find vector between two sides
             Vector2 launchOffsetPositon = (Vector2)LaunchOffsetRight1.position + (Random.value * v); //pick random position along ship side
@@ -191,11 +173,10 @@ public class PlayerMovement : MonoBehaviour
 
         Invoke(nameof(ResetAttack), timeBetweenAttack);
     }
-
-    private void ShootCannonLeft()
+    private void ShootCannonLeft(int numberOfRounds)
     {
 
-        for (int i = 0; i < numberOfGuns; i++) //Weapons.numberOfGuns
+        for (int i = 0; i < numberOfRounds; i++) //Weapons.numberOfGuns
         {
 
             Vector2 v = LaunchOffsetLeft2.position - LaunchOffsetLeft1.position; //find vector between two sides
@@ -206,12 +187,10 @@ public class PlayerMovement : MonoBehaviour
 
         Invoke(nameof(ResetAttack), timeBetweenAttack);
     }
-
     public void ResetAttack()
     {
         alreadyShooting = false;
     }
-
     public void SwitchCannonSide()
     {
         if (shootSide == true)
@@ -224,7 +203,16 @@ public class PlayerMovement : MonoBehaviour
         }
         Debug.Log("Shootside: " + shootSide);
     }
+    private void FireCannonSide(int numberOfRounds)
+    {
+        switch (shootSide)
+        {
+            case true:
+                ShootCannonRight(numberOfRounds);
+                break;
+            case false:
+                ShootCannonLeft(numberOfRounds);
+                break;
+        }
+    }
 }
-
-
-7

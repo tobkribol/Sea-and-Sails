@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         //Move camera to player
-        transform.position = new Vector3(player.position.x, player.position.y, transform.position.z);
+        transform.position = new Vector3(player.position.x, player.position.y, Camera.main.transform.position.z);
 
         //Scroll camera
         ScrollWheelChange = Input.GetAxis("Mouse ScrollWheel");
@@ -22,7 +22,6 @@ public class CameraController : MonoBehaviour
         {   
             Debug.Log("scroll: " + ScrollWheelChange + "position: " + Camera.main.transform.position.z);
             Camera.main.transform.position += Camera.main.transform.forward * ScrollWheelChange * ScrollWheelChangeSpeed;
-
         }
         else if (Camera.main.transform.position.z > ScrollWheelChangeMinZoom)
         {
