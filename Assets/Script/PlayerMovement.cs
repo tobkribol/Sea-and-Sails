@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+
     //class Input
     
     Weapons weapons;
@@ -35,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform LaunchOffsetLeft2;
     [SerializeField] private Rigidbody2D rb;
 
+
     [Header("Canvas Data")]
     [SerializeField] private Text[] ammoText; //need UnityEngine.UI
     [HideInInspector] public bool shootSide = true;
@@ -59,7 +61,9 @@ public class PlayerMovement : MonoBehaviour
     {
         Move();
 
+
         if (Input.GetButton("Fire1"))
+
         {
             FireCannon();
         }
@@ -95,19 +99,23 @@ public class PlayerMovement : MonoBehaviour
             ammoType = 1;
         }
 
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             SwitchCannonSide();
         }
+
     }
 
     private void Move()
     {
+
         if (rb.velocity.magnitude < maxSpeed)
         {
             rb.AddRelativeForce(transform.up * moveSpeed); //Physics based movement
             //https://answers.unity.com/questions/616195/how-to-make-an-object-go-the-direction-it-is-facin.html
         }
+
 
         //Rortation
         if (Input.GetKey(KeyCode.A))
@@ -170,7 +178,6 @@ public class PlayerMovement : MonoBehaviour
 
         }
     }
-
     private void ShootCannonRight()
     {
         
@@ -219,3 +226,5 @@ public class PlayerMovement : MonoBehaviour
     }
 }
 
+
+7
