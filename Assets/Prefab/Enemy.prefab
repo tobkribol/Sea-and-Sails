@@ -132,8 +132,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1000
-  m_LinearDrag: 0
-  m_AngularDrag: 0.2
+  m_LinearDrag: 1
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -168,10 +168,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b72d67bc7bbf0545919f47a16a44a38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cannonballText: {fileID: 0}
+  hotshotText: {fileID: 0}
   moveSpeed: 2
+  maxSpeed: 1.5
+  acceleration: 1
+  deacceleration: 0.9
   rotationSpeed: 720
-  rb: {fileID: 6291646599811955416}
   timeBetweenAttack: 0.2
+  cannonballs: 25
+  rb: {fileID: 6291646599811955416}
   ProjectilePrefab: {fileID: 5013182278604835448, guid: 2395b98fb3dbdd549b054da55d417b5b, type: 3}
   LaunchOffset: {fileID: 1129635649937031463}
   LaunchOffsetRight: {fileID: 0}
