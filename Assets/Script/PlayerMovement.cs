@@ -47,7 +47,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-
+        ammoText[0].text = "Cannonball: " + ammoCannonball;
+        ammoText[1].text = "Hotshot: " + ammoHotshot;
     }
     void Update()
     {
@@ -96,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            GetCannonSide();
+            SwitchCannonSide();
         }
     }
 
@@ -204,7 +205,7 @@ public class PlayerMovement : MonoBehaviour
         alreadyShooting = false;
     }
 
-    public void GetCannonSide()
+    public void SwitchCannonSide()
     {
         if (shootSide == true)
         {
