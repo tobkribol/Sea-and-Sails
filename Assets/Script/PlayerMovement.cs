@@ -104,6 +104,7 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddRelativeForce(transform.up * moveSpeed); //Physics based movement
             //https://answers.unity.com/questions/616195/how-to-make-an-object-go-the-direction-it-is-facin.html
+            //https://github.com/vlytsus/unity-3d-boat/blob/cf17525846dd67147b21ee479b7e6e1572c27b92/Assets/Scenes/BoatForces.cs
         }
 
 
@@ -125,10 +126,10 @@ public class PlayerMovement : MonoBehaviour
         switch (ammoType)
         {
             case 0:
+                //Canonball
                 if (!alreadyShooting && (ammoCannonball > numberOfGunsSide))
                 {
                     FireCannonSide(numberOfGunsSide);
-                    alreadyShooting = true;
                     ammoCannonball -= numberOfGunsSide;
                     ammoText[ammoType].text = "Cannonball: " + ammoCannonball;
 
@@ -136,24 +137,22 @@ public class PlayerMovement : MonoBehaviour
                 else if (!alreadyShooting && (ammoCannonball > 0))
                 {
                     FireCannonSide(ammoCannonball);
-                    alreadyShooting = true;
                     ammoCannonball -= ammoCannonball;
                     ammoText[ammoType].text = "Cannonball: " + ammoCannonball;
                 }
                 break;
 
             case 1:
+                //Hotshot
                 if (!alreadyShooting && (ammoHotshot > numberOfGunsSide))
                 {
                     FireCannonSide(numberOfGunsSide);
-                    alreadyShooting = true;
                     ammoHotshot -= numberOfGunsSide;
                     ammoText[ammoType].text = "Hotshot: " + ammoHotshot;
                 }
                 else if (!alreadyShooting && (ammoHotshot > 0))
                 {
                     FireCannonSide(ammoHotshot);
-                    alreadyShooting = true;
                     ammoHotshot -= ammoHotshot;
                     ammoText[ammoType].text = "Hotshot: " + ammoHotshot;
                 }
@@ -201,10 +200,10 @@ public class PlayerMovement : MonoBehaviour
         {
             shootSide = true;
         }
-        Debug.Log("Shootside: " + shootSide);
     }
     private void FireCannonSide(int numberOfRounds)
     {
+        alreadyShooting = true;
         switch (shootSide)
         {
             case true:
