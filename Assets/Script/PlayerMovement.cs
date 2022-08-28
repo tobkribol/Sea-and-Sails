@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxSpeed = 1.5f;
     [SerializeField] private float acceleration = 1f;
     [SerializeField] private float deacceleration = 0.9f;
-    [SerializeField] private float rotationSpeed = 1f;
+    [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] public float timeBetweenAttack = 0.15f;
 
 
@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     bool alreadyShooting = false;
     float inputMagnitude;
     [HideInInspector] public Vector2 moveDirection;
+    public ParticleSystem PS;
 
 
     private void Start()
@@ -65,6 +66,9 @@ public class PlayerMovement : MonoBehaviour
 
         {
             FireCannon();
+
+
+            
         }
     }
     void ProcessInputs()
@@ -111,13 +115,16 @@ public class PlayerMovement : MonoBehaviour
         //Rortation
         if (Input.GetKey(KeyCode.A))
         {
-            Vector3 rotationToAdd = new Vector3(0, 0, rotationSpeed);
+            Vector3 rotationToAdd = new Vector3(0, 0, rotationSpeed * Time.deltaTime);
             transform.Rotate(rotationToAdd);
+            //transform.rotation = Quaternion.Euler(new Vector3(0, 0, transform.rotation.z + rotationSpeed));
+            Debug.Log(transform.rotation.z);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            Vector3 rotationToAdd = new Vector3(0, 0, -rotationSpeed);
+            Vector3 rotationToAdd = new Vector3(0, 0, -rotationSpeed * Time.deltaTime);
             transform.Rotate(rotationToAdd);
+            Debug.Log(transform.rotation.z);
         }
     }
     private void FireCannon()
@@ -168,6 +175,8 @@ public class PlayerMovement : MonoBehaviour
             Vector2 launchOffsetPositon = (Vector2)LaunchOffsetRight1.position + (Random.value * v); //pick random position along ship side
 
             Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
+            Instantiate(PS, launchOffsetPositon, transform.rotation);
+            PS.startRotation = -transform.rotation.z;
         }
 
         Invoke(nameof(ResetAttack), timeBetweenAttack);
@@ -182,6 +191,8 @@ public class PlayerMovement : MonoBehaviour
             Vector2 launchOffsetPositon = (Vector2)LaunchOffsetLeft1.position + (Random.value * v); //pick random position along ship side
 
             Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
+            Instantiate(PS, launchOffsetPositon, transform.rotation);
+            PS.startRotation = transform.rotation.z;
         }
 
         Invoke(nameof(ResetAttack), timeBetweenAttack);

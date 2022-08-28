@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private Camera camara;
     private float ScrollWheelChange = 0f;
-    [SerializeField] private float ScrollWheelChangeSpeed = 2f;
+    [SerializeField] private float ScrollWheelChangeSpeed = 4f;
     [SerializeField] private float ScrollWheelChangeMinZoom = -1.5f;
     [SerializeField] private float ScrollWheelChangeMaxZoom = -12f;
 
@@ -16,11 +16,12 @@ public class CameraController : MonoBehaviour
         //Move camera to player
         transform.position = new Vector3(player.position.x, player.position.y, Camera.main.transform.position.z);
 
-        //Scroll camera
+        //Scroll camera        
         ScrollWheelChange = Input.GetAxis("Mouse ScrollWheel");
+        //Debug.Log("scroll: " + ScrollWheelChange + "position: " + Camera.main.transform.position.z);
+
         if (ScrollWheelChange != 0f && Camera.main.transform.position.z <= ScrollWheelChangeMinZoom && Camera.main.transform.position.z >= ScrollWheelChangeMaxZoom)
-        {   
-            Debug.Log("scroll: " + ScrollWheelChange + "position: " + Camera.main.transform.position.z);
+        {
             Camera.main.transform.position += Camera.main.transform.forward * ScrollWheelChange * ScrollWheelChangeSpeed;
         }
         else if (Camera.main.transform.position.z > ScrollWheelChangeMinZoom)
