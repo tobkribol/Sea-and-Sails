@@ -66,9 +66,6 @@ public class PlayerMovement : MonoBehaviour
 
         {
             FireCannon();
-
-
-            
         }
     }
     void ProcessInputs()
@@ -106,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (rb.velocity.magnitude < maxSpeed)
         {
-            rb.AddRelativeForce(transform.up * moveSpeed); //Physics based movement
+            rb.AddForce(transform.up * moveSpeed); //Physics based movement
             //https://answers.unity.com/questions/616195/how-to-make-an-object-go-the-direction-it-is-facin.html
             //https://github.com/vlytsus/unity-3d-boat/blob/cf17525846dd67147b21ee479b7e6e1572c27b92/Assets/Scenes/BoatForces.cs
         }
@@ -176,7 +173,6 @@ public class PlayerMovement : MonoBehaviour
 
             Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
             Instantiate(PS, launchOffsetPositon, transform.rotation);
-            PS.startRotation = -transform.rotation.z;
         }
 
         Invoke(nameof(ResetAttack), timeBetweenAttack);
@@ -192,7 +188,6 @@ public class PlayerMovement : MonoBehaviour
 
             Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
             Instantiate(PS, launchOffsetPositon, transform.rotation);
-            PS.startRotation = transform.rotation.z;
         }
 
         Invoke(nameof(ResetAttack), timeBetweenAttack);
