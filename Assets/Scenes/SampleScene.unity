@@ -2672,7 +2672,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1669880369}
   serializedVersion: 8
-  lengthInSec: 60
+  lengthInSec: 11
   simulationSpeed: 0.1
   stopAction: 0
   cullingMode: 0
@@ -2747,7 +2747,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 60
+      scalar: 10
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -8547,10 +8547,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 103979630, guid: 9c1a67d5b13870b4a9be20b328bad042, type: 3}
-      propertyPath: InitialModule.startRotation.scalar
-      value: 1.5707963
-      objectReference: {fileID: 0}
-    - target: {fileID: 103979630, guid: 9c1a67d5b13870b4a9be20b328bad042, type: 3}
       propertyPath: SubModule.subEmitters.Array.data[0].emitter
       value: 
       objectReference: {fileID: 1669880370}
@@ -8735,10 +8731,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 1971823273880648222, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 10.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066295703896943842, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066295705688823127, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7029042429075516865, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 10.299998
+      objectReference: {fileID: 0}
     - target: {fileID: 7061844666675684002, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
       propertyPath: PS
       value: 
       objectReference: {fileID: 2542473984900531951, guid: 9c1a67d5b13870b4a9be20b328bad042, type: 3}
+    - target: {fileID: 7061844666675684002, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: ammoHotshot
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 7061844666675684002, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: ammoCannonball
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 7061844666675684002, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
       propertyPath: ammoText.Array.data[0]
       value: 

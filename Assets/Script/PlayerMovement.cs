@@ -27,6 +27,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public int ammoCannonball = 200;
     [SerializeField] public int ammoHotshot = 200;
     [SerializeField] private ProjectileBehaviour[] ProjectilePrefab;
+    private int CurrentItemInt;
+    private int numberOfCycles = 1;
+
 
     //Standard  
     [Header("Inputdata")]
@@ -56,11 +59,11 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         ProcessInputs();
+        ItemCycleList();
     }
     private void FixedUpdate()
     {
         Move();
-
 
         if (Input.GetButton("Fire1"))
 
@@ -115,13 +118,11 @@ public class PlayerMovement : MonoBehaviour
             Vector3 rotationToAdd = new Vector3(0, 0, rotationSpeed * Time.deltaTime);
             transform.Rotate(rotationToAdd);
             //transform.rotation = Quaternion.Euler(new Vector3(0, 0, transform.rotation.z + rotationSpeed));
-            Debug.Log(transform.rotation.z);
         }
         else if (Input.GetKey(KeyCode.D))
         {
             Vector3 rotationToAdd = new Vector3(0, 0, -rotationSpeed * Time.deltaTime);
             transform.Rotate(rotationToAdd);
-            Debug.Log(transform.rotation.z);
         }
     }
     private void FireCannon()
@@ -131,6 +132,7 @@ public class PlayerMovement : MonoBehaviour
         {
             case 0:
                 //Canonball
+                //Full broadside fire
                 if (!alreadyShooting && (ammoCannonball > numberOfGunsSide))
                 {
                     FireCannonSide(numberOfGunsSide);
@@ -138,6 +140,7 @@ public class PlayerMovement : MonoBehaviour
                     ammoText[ammoType].text = "Cannonball: " + ammoCannonball;
 
                 }
+                //In case of less than full broadside use remaining ammo
                 else if (!alreadyShooting && (ammoCannonball > 0))
                 {
                     FireCannonSide(ammoCannonball);
@@ -165,15 +168,37 @@ public class PlayerMovement : MonoBehaviour
     }
     private void ShootCannonRight(int numberOfRounds)
     {
-        
-        for (int i = 0; i < numberOfRounds; i++)
+        switch (numberOfCycles)
         {
-            Vector2 v = LaunchOffsetRight2.position - LaunchOffsetRight1.position; //find vector between two sides
-            Vector2 launchOffsetPositon = (Vector2)LaunchOffsetRight1.position + (Random.value * v); //pick random position along ship side
+            case 0:
+                for (int i = 0; i < numberOfRounds; i++)
+                {
+                    Vector2 v = LaunchOffsetRight2.position - LaunchOffsetRight1.position; //find vector between two sides
+                    Vector2 launchOffsetPositon = (Vector2)LaunchOffsetRight1.position + (Random.value * v); //pick random position along ship side
 
-            Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
-            Instantiate(PS, launchOffsetPositon, transform.rotation);
+                    Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
+                    Instantiate(PS, launchOffsetPositon, transform.rotation * Quaternion.Euler(new Vector3(0, 0, -90f))); //Quaternion must be multiplied (as vectors) https://answers.unity.com/questions/1353333/how-to-add-2-quaternions.html
+                }
+                break;
+
+            case 1:
+                for (int i = 0; i < numberOfRounds; i++)
+                {
+                    Vector2 v = LaunchOffsetRight2.position - LaunchOffsetRight1.position; //find vector between two sides
+                    
+                    Vector2 dividedFireLine = v / numberOfRounds;
+                    Vector2 launchOffsetPositon = (Vector2)LaunchOffsetRight1.position;
+                    launchOffsetPositon += dividedFireLine;
+                    Debug.Log(launchOffsetPositon);
+
+                    Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
+                    Instantiate(PS, launchOffsetPositon, transform.rotation * Quaternion.Euler(new Vector3(0, 0, -90f))); //Quaternion must be multiplied (as vectors) https://answers.unity.com/questions/1353333/how-to-add-2-quaternions.html
+                }
+                break;
+
         }
+
+
 
         Invoke(nameof(ResetAttack), timeBetweenAttack);
     }
@@ -187,7 +212,7 @@ public class PlayerMovement : MonoBehaviour
             Vector2 launchOffsetPositon = (Vector2)LaunchOffsetLeft1.position + (Random.value * v); //pick random position along ship side
 
             Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
-            Instantiate(PS, launchOffsetPositon, transform.rotation);
+            Instantiate(PS, launchOffsetPositon, transform.rotation * Quaternion.Euler(new Vector3(0, 0, 90f)));
         }
 
         Invoke(nameof(ResetAttack), timeBetweenAttack);
@@ -219,5 +244,22 @@ public class PlayerMovement : MonoBehaviour
                 ShootCannonLeft(numberOfRounds);
                 break;
         }
+    }
+
+    private void ItemCycleList()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (CurrentItemInt >= numberOfCycles)
+            {
+                CurrentItemInt = 0;
+            }
+            else
+            {
+                CurrentItemInt += 1;
+            }
+            Debug.Log("CurrentItemInt: " + CurrentItemInt);
+        }
+        //CurrentItemObject = Items[CurrentItemInt];
     }
 }
