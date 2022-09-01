@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+    //"Ctrl + M, O" to collapse.
 
     //class Input
-    
     Weapons weapons;
 
 
@@ -38,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform LaunchOffsetLeft1;
     public Transform LaunchOffsetLeft2;
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Transform shipRotateAxis;
 
 
     [Header("Canvas Data")]
@@ -128,6 +129,7 @@ public class PlayerMovement : MonoBehaviour
     private void FireCannon()
     {
         int numberOfGunsSide = numberOfGuns / 2;
+
         switch (ammoType)
         {
             case 0:
@@ -168,7 +170,8 @@ public class PlayerMovement : MonoBehaviour
     }
     private void ShootCannonRight(int numberOfRounds)
     {
-        switch (numberOfCycles)
+        //should watch for object pooling https://www.youtube.com/watch?v=uxm4a0QnQ9E
+        switch (CurrentItemInt)
         {
             case 0:
                 for (int i = 0; i < numberOfRounds; i++)
@@ -182,15 +185,12 @@ public class PlayerMovement : MonoBehaviour
                 break;
 
             case 1:
+
                 for (int i = 0; i < numberOfRounds; i++)
                 {
                     Vector2 v = LaunchOffsetRight2.position - LaunchOffsetRight1.position; //find vector between two sides
-                    
-                    Vector2 dividedFireLine = v / numberOfRounds;
-                    Vector2 launchOffsetPositon = (Vector2)LaunchOffsetRight1.position;
-                    launchOffsetPositon += dividedFireLine;
-                    Debug.Log(launchOffsetPositon);
-
+                    Vector2 fireLineStep = ((1 / (float)numberOfRounds)) * (float)i * v ;
+                    Vector2 launchOffsetPositon = (Vector2)LaunchOffsetRight1.position + fireLineStep; //pick random position along ship side
                     Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
                     Instantiate(PS, launchOffsetPositon, transform.rotation * Quaternion.Euler(new Vector3(0, 0, -90f))); //Quaternion must be multiplied (as vectors) https://answers.unity.com/questions/1353333/how-to-add-2-quaternions.html
                 }
@@ -204,17 +204,30 @@ public class PlayerMovement : MonoBehaviour
     }
     private void ShootCannonLeft(int numberOfRounds)
     {
-
-        for (int i = 0; i < numberOfRounds; i++) //Weapons.numberOfGuns
+        switch (CurrentItemInt)
         {
+            case 0:
+                for (int i = 0; i < numberOfRounds; i++)
+                {
+                    Vector2 v = LaunchOffsetLeft2.position - LaunchOffsetLeft1.position; //find vector between two sides
+                    Vector2 launchOffsetPositon = (Vector2)LaunchOffsetLeft1.position + (Random.value * v); //pick random position along ship side
+                    Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
+                    Instantiate(PS, launchOffsetPositon, transform.rotation * Quaternion.Euler(new Vector3(0, 0, 90f))); //Quaternion must be multiplied (as vectors) https://answers.unity.com/questions/1353333/how-to-add-2-quaternions.html
+                }
+                break;
 
-            Vector2 v = LaunchOffsetLeft2.position - LaunchOffsetLeft1.position; //find vector between two sides
-            Vector2 launchOffsetPositon = (Vector2)LaunchOffsetLeft1.position + (Random.value * v); //pick random position along ship side
+            case 1:
 
-            Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
-            Instantiate(PS, launchOffsetPositon, transform.rotation * Quaternion.Euler(new Vector3(0, 0, 90f)));
+                for (int i = 0; i < numberOfRounds; i++)
+                {
+                    Vector2 v = LaunchOffsetLeft2.position - LaunchOffsetLeft1.position; //find vector between two sides
+                    Vector2 fireLineStep = ((1 / (float)numberOfRounds)) * (float)i * v;
+                    Vector2 launchOffsetPositon = (Vector2)LaunchOffsetLeft1.position + fireLineStep;
+                    Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
+                    Instantiate(PS, launchOffsetPositon, transform.rotation * Quaternion.Euler(new Vector3(0, 0, 90f))); //Quaternion must be multiplied (as vectors) https://answers.unity.com/questions/1353333/how-to-add-2-quaternions.html
+                }
+                break;
         }
-
         Invoke(nameof(ResetAttack), timeBetweenAttack);
     }
     public void ResetAttack()
@@ -245,7 +258,6 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
     }
-
     private void ItemCycleList()
     {
         if (Input.GetKeyDown(KeyCode.F))

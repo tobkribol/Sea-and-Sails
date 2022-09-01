@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1306895127218882050}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 22, z: 0}
+  m_LocalPosition: {x: 10.299998, y: 22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -55,12 +55,43 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2553138872715264142}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -30, z: 0}
+  m_LocalPosition: {x: 10.3, y: -30, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6508370656732219808}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3026319605814430225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4057719128342955829}
+  m_Layer: 0
+  m_Name: shipRotateAxis
+  m_TagString: LeftBulletSpawn
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4057719128342955829
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3026319605814430225}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.013, y: -0.29999995, z: 0}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7061844666675684003}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4066295703896943843
 GameObject:
@@ -86,7 +117,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4066295703896943843}
   m_LocalRotation: {x: 0, y: 0, z: -1, w: 0}
-  m_LocalPosition: {x: 0, y: -22, z: 0}
+  m_LocalPosition: {x: 8, y: -22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -117,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4066295705688823124}
   m_LocalRotation: {x: 0, y: 0, z: -1, w: 0}
-  m_LocalPosition: {x: 0, y: 30, z: 0}
+  m_LocalPosition: {x: 8, y: 30, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -161,6 +192,7 @@ Transform:
   m_Children:
   - {fileID: 9103913139841384686}
   - {fileID: 6508370656732219808}
+  - {fileID: 4057719128342955829}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -270,10 +302,10 @@ MonoBehaviour:
   acceleration: 0.1
   deacceleration: 0.9
   rotationSpeed: 25
-  timeBetweenAttack: 0.2
-  numberOfGuns: 6
-  ammoCannonball: 25
-  ammoHotshot: 25
+  timeBetweenAttack: 1.6
+  numberOfGuns: 12
+  ammoCannonball: 200
+  ammoHotshot: 200
   ProjectilePrefab:
   - {fileID: 5013182278604835448, guid: 81d5a038f4ce43e4cb1696eda19744f9, type: 3}
   - {fileID: 5013182278604835448, guid: 749d08c177c7aa5478a64a17b071c49e, type: 3}
@@ -282,12 +314,13 @@ MonoBehaviour:
   LaunchOffsetLeft1: {fileID: 7029042429075516865}
   LaunchOffsetLeft2: {fileID: 1971823273880648222}
   rb: {fileID: 7061844666675684001}
+  shipRotateAxis: {fileID: 4057719128342955829}
   ammoText:
   - {fileID: 0}
   - {fileID: 0}
   shootSide: 1
   moveDirection: {x: 0, y: 0}
-  PS: {fileID: 0}
+  PS: {fileID: 2542473984900531951, guid: 9c1a67d5b13870b4a9be20b328bad042, type: 3}
 --- !u!111 &4066295704575067121
 Animation:
   m_ObjectHideFlags: 0
