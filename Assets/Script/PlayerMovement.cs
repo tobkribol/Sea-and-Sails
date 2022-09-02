@@ -33,10 +33,8 @@ public class PlayerMovement : MonoBehaviour
 
     //Standard  
     [Header("Inputdata")]
-    public Transform LaunchOffsetRight1;
-    public Transform LaunchOffsetRight2;
-    public Transform LaunchOffsetLeft1;
-    public Transform LaunchOffsetLeft2;
+    [SerializeField] private Transform [] LaunchOffsetRight;
+    [SerializeField] private Transform[] LaunchOffsetLeft;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform shipRotateAxis;
 
@@ -46,7 +44,8 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public bool shootSide = true;
     private int ammoType = 0;
 
-    bool alreadyShooting = false;
+    bool alreadyShootingLeft = false;
+    bool alreadyShootingRight = false;
     float inputMagnitude;
     [HideInInspector] public Vector2 moveDirection;
     public ParticleSystem PS;
@@ -135,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
             case 0:
                 //Canonball
                 //Full broadside fire
-                if (!alreadyShooting && (ammoCannonball > numberOfGunsSide))
+                if (ammoCannonball > numberOfGunsSide)
                 {
                     FireCannonSide(numberOfGunsSide);
                     ammoCannonball -= numberOfGunsSide;
@@ -143,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
 
                 }
                 //In case of less than full broadside use remaining ammo
-                else if (!alreadyShooting && (ammoCannonball > 0))
+                else if ((!alreadyShootingLeft || !alreadyShootingRight) && (ammoCannonball > 0))
                 {
                     FireCannonSide(ammoCannonball);
                     ammoCannonball -= ammoCannonball;
@@ -153,13 +152,13 @@ public class PlayerMovement : MonoBehaviour
 
             case 1:
                 //Hotshot
-                if (!alreadyShooting && (ammoHotshot > numberOfGunsSide))
+                if ((!alreadyShootingLeft || !alreadyShootingRight) && (ammoHotshot > numberOfGunsSide))
                 {
                     FireCannonSide(numberOfGunsSide);
                     ammoHotshot -= numberOfGunsSide;
                     ammoText[ammoType].text = "Hotshot: " + ammoHotshot;
                 }
-                else if (!alreadyShooting && (ammoHotshot > 0))
+                else if ((!alreadyShootingLeft || !alreadyShootingRight) && (ammoHotshot > 0))
                 {
                     FireCannonSide(ammoHotshot);
                     ammoHotshot -= ammoHotshot;
@@ -168,19 +167,29 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
     }
-    private void ShootCannonRight(int numberOfRounds)
+    private void ShootCannon(int numberOfRounds, Transform position1, Transform position2)
     {
         //should watch for object pooling https://www.youtube.com/watch?v=uxm4a0QnQ9E
+        float rotationfactor = 1;
+        if (shootSide)
+        {
+            rotationfactor = -1;
+        }
+        else
+        {
+            rotationfactor = 1;
+        }
+
         switch (CurrentItemInt)
         {
             case 0:
                 for (int i = 0; i < numberOfRounds; i++)
                 {
-                    Vector2 v = LaunchOffsetRight2.position - LaunchOffsetRight1.position; //find vector between two sides
-                    Vector2 launchOffsetPositon = (Vector2)LaunchOffsetRight1.position + (Random.value * v); //pick random position along ship side
+                    Vector2 v = position2.position - position1.position; //find vector between two sides
+                    Vector2 launchOffsetPositon = (Vector2)position1.position + (Random.value * v); //pick random position along ship side
 
                     Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
-                    Instantiate(PS, launchOffsetPositon, transform.rotation * Quaternion.Euler(new Vector3(0, 0, -90f))); //Quaternion must be multiplied (as vectors) https://answers.unity.com/questions/1353333/how-to-add-2-quaternions.html
+                    Instantiate(PS, launchOffsetPositon, transform.rotation * Quaternion.Euler(new Vector3(0, 0, rotationfactor * 90f))); //Quaternion must be multiplied (as vectors) https://answers.unity.com/questions/1353333/how-to-add-2-quaternions.html
                 }
                 break;
 
@@ -188,51 +197,24 @@ public class PlayerMovement : MonoBehaviour
 
                 for (int i = 0; i < numberOfRounds; i++)
                 {
-                    Vector2 v = LaunchOffsetRight2.position - LaunchOffsetRight1.position; //find vector between two sides
+                    Vector2 v = position2.position - position1.position; //find vector between two sides
                     Vector2 fireLineStep = ((1 / (float)numberOfRounds)) * (float)i * v ;
-                    Vector2 launchOffsetPositon = (Vector2)LaunchOffsetRight1.position + fireLineStep; //pick random position along ship side
+                    Vector2 launchOffsetPositon = (Vector2)position1.position + fireLineStep; //pick random position along ship side
                     Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
-                    Instantiate(PS, launchOffsetPositon, transform.rotation * Quaternion.Euler(new Vector3(0, 0, -90f))); //Quaternion must be multiplied (as vectors) https://answers.unity.com/questions/1353333/how-to-add-2-quaternions.html
-                }
-                break;
-
-        }
-
-
-
-        Invoke(nameof(ResetAttack), timeBetweenAttack);
-    }
-    private void ShootCannonLeft(int numberOfRounds)
-    {
-        switch (CurrentItemInt)
-        {
-            case 0:
-                for (int i = 0; i < numberOfRounds; i++)
-                {
-                    Vector2 v = LaunchOffsetLeft2.position - LaunchOffsetLeft1.position; //find vector between two sides
-                    Vector2 launchOffsetPositon = (Vector2)LaunchOffsetLeft1.position + (Random.value * v); //pick random position along ship side
-                    Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
-                    Instantiate(PS, launchOffsetPositon, transform.rotation * Quaternion.Euler(new Vector3(0, 0, 90f))); //Quaternion must be multiplied (as vectors) https://answers.unity.com/questions/1353333/how-to-add-2-quaternions.html
-                }
-                break;
-
-            case 1:
-
-                for (int i = 0; i < numberOfRounds; i++)
-                {
-                    Vector2 v = LaunchOffsetLeft2.position - LaunchOffsetLeft1.position; //find vector between two sides
-                    Vector2 fireLineStep = ((1 / (float)numberOfRounds)) * (float)i * v;
-                    Vector2 launchOffsetPositon = (Vector2)LaunchOffsetLeft1.position + fireLineStep;
-                    Instantiate(ProjectilePrefab[ammoType], launchOffsetPositon, transform.rotation);
-                    Instantiate(PS, launchOffsetPositon, transform.rotation * Quaternion.Euler(new Vector3(0, 0, 90f))); //Quaternion must be multiplied (as vectors) https://answers.unity.com/questions/1353333/how-to-add-2-quaternions.html
+                    Instantiate(PS, launchOffsetPositon, transform.rotation * Quaternion.Euler(new Vector3(0, 0, rotationfactor * 90f))); //Quaternion must be multiplied (as vectors) https://answers.unity.com/questions/1353333/how-to-add-2-quaternions.html
                 }
                 break;
         }
-        Invoke(nameof(ResetAttack), timeBetweenAttack);
+        Invoke(nameof(ResetAttackRight), timeBetweenAttack);
     }
-    public void ResetAttack()
+
+    public void ResetAttackLeft()
     {
-        alreadyShooting = false;
+        alreadyShootingLeft = false;
+    }
+    public void ResetAttackRight()
+    {
+        alreadyShootingRight = false;
     }
     public void SwitchCannonSide()
     {
@@ -247,14 +229,25 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FireCannonSide(int numberOfRounds)
     {
-        alreadyShooting = true;
+        
         switch (shootSide)
         {
             case true:
-                ShootCannonRight(numberOfRounds);
+                if (alreadyShootingRight == false)
+                {
+                    alreadyShootingRight = true;
+                    ShootCannon(numberOfRounds, LaunchOffsetRight[0], LaunchOffsetRight[1]);
+                    Invoke(nameof(ResetAttackRight), timeBetweenAttack);
+                }
                 break;
+
             case false:
-                ShootCannonLeft(numberOfRounds);
+                if (alreadyShootingLeft == false)
+                {
+                    alreadyShootingLeft = true;
+                    ShootCannon(numberOfRounds, LaunchOffsetLeft[0], LaunchOffsetLeft[1]);
+                    Invoke(nameof(ResetAttackLeft), timeBetweenAttack);
+                }
                 break;
         }
     }
