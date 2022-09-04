@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
 
     //class Input
     Weapons weapons;
+    SailRotation sr;
+    [SerializeField] Transform [] shipSails;
 
 
     // Variable player input
@@ -37,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform[] LaunchOffsetLeft;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform shipRotateAxis;
+    [SerializeField] private Transform shipSailMid;
 
 
     [Header("Canvas Data")]
@@ -55,6 +58,8 @@ public class PlayerMovement : MonoBehaviour
     {
         ammoText[0].text = "Cannonball: " + ammoCannonball;
         ammoText[1].text = "Hotshot: " + ammoHotshot;
+        sr = shipSails[0].GetComponent<SailRotation>();
+
     }
     void Update()
     {
@@ -74,14 +79,14 @@ public class PlayerMovement : MonoBehaviour
     void ProcessInputs()
     {
         //Move input
-        if (Input.GetKeyDown(KeyCode.W) && moveSpeed < 1000)
+        if (Input.GetKeyDown(KeyCode.W) && moveSpeed < 50)
         {
-            moveSpeed += 50;
+            moveSpeed += 25;
         }
 
         if (Input.GetKeyDown(KeyCode.S) && moveSpeed > 0)
         {
-            moveSpeed -= 50;
+            moveSpeed -= 25;
         }
 
         //Weapon
@@ -95,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             SwitchCannonSide();
         }
@@ -106,13 +111,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (rb.velocity.magnitude < maxSpeed)
         {
-            rb.AddForce(transform.up * moveSpeed); //Physics based movement
+            rb.AddForce(transform.up * moveSpeed * sr.GetWindSpeedBoost()); //Physics based movement
+            Debug.Log("GetWindSpeedBoost: " + sr.GetWindSpeedBoost() + "| GetSailWindAngle: " + sr.GetSailWindAngle() + "| GetWindSpeed: " + sr.GetWindSpeed());
             //https://answers.unity.com/questions/616195/how-to-make-an-object-go-the-direction-it-is-facin.html
             //https://github.com/vlytsus/unity-3d-boat/blob/cf17525846dd67147b21ee479b7e6e1572c27b92/Assets/Scenes/BoatForces.cs
         }
 
 
-        //Rortation
+        //Rotation
         if (Input.GetKey(KeyCode.A))
         {
             Vector3 rotationToAdd = new Vector3(0, 0, rotationSpeed * Time.deltaTime);
@@ -136,33 +142,26 @@ public class PlayerMovement : MonoBehaviour
                 //Full broadside fire
                 if (ammoCannonball > numberOfGunsSide)
                 {
-                    FireCannonSide(numberOfGunsSide);
-                    ammoCannonball -= numberOfGunsSide;
-                    ammoText[ammoType].text = "Cannonball: " + ammoCannonball;
+                    FireCannonSide(numberOfGunsSide, ammoType);
+
 
                 }
                 //In case of less than full broadside use remaining ammo
-                else if ((!alreadyShootingLeft || !alreadyShootingRight) && (ammoCannonball > 0))
+                else if (ammoCannonball > 0)
                 {
-                    FireCannonSide(ammoCannonball);
-                    ammoCannonball -= ammoCannonball;
-                    ammoText[ammoType].text = "Cannonball: " + ammoCannonball;
+                    FireCannonSide(ammoCannonball, ammoType);
                 }
                 break;
 
             case 1:
                 //Hotshot
-                if ((!alreadyShootingLeft || !alreadyShootingRight) && (ammoHotshot > numberOfGunsSide))
+                if (ammoHotshot > numberOfGunsSide)
                 {
-                    FireCannonSide(numberOfGunsSide);
-                    ammoHotshot -= numberOfGunsSide;
-                    ammoText[ammoType].text = "Hotshot: " + ammoHotshot;
+                    FireCannonSide(numberOfGunsSide, ammoType);
                 }
-                else if ((!alreadyShootingLeft || !alreadyShootingRight) && (ammoHotshot > 0))
+                else if (ammoHotshot > 0)
                 {
-                    FireCannonSide(ammoHotshot);
-                    ammoHotshot -= ammoHotshot;
-                    ammoText[ammoType].text = "Hotshot: " + ammoHotshot;
+                    FireCannonSide(ammoHotshot, ammoType);
                 }
                 break;
         }
@@ -207,7 +206,6 @@ public class PlayerMovement : MonoBehaviour
         }
         Invoke(nameof(ResetAttackRight), timeBetweenAttack);
     }
-
     public void ResetAttackLeft()
     {
         alreadyShootingLeft = false;
@@ -227,9 +225,18 @@ public class PlayerMovement : MonoBehaviour
             shootSide = true;
         }
     }
-    private void FireCannonSide(int numberOfRounds)
+    private void FireCannonSide(int numberOfRounds, int ammoType)
     {
-        
+        string ammoTextType = "";
+        if (ammoType == 0)
+        {
+            ammoTextType = "Cannonball: ";
+        }
+        else if (ammoType == 1)
+        {
+            ammoTextType = "Hotshot: ";
+        }
+
         switch (shootSide)
         {
             case true:
@@ -237,6 +244,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     alreadyShootingRight = true;
                     ShootCannon(numberOfRounds, LaunchOffsetRight[0], LaunchOffsetRight[1]);
+                    ammoText[ammoType].text = ammoTextType + ReduceAmmo(numberOfRounds);
                     Invoke(nameof(ResetAttackRight), timeBetweenAttack);
                 }
                 break;
@@ -246,10 +254,23 @@ public class PlayerMovement : MonoBehaviour
                 {
                     alreadyShootingLeft = true;
                     ShootCannon(numberOfRounds, LaunchOffsetLeft[0], LaunchOffsetLeft[1]);
+                    ammoText[ammoType].text = ammoTextType + ReduceAmmo(numberOfRounds);
                     Invoke(nameof(ResetAttackLeft), timeBetweenAttack);
                 }
                 break;
         }
+    }
+    private int ReduceAmmo(int numberOfRounds)
+    {
+        if (ammoType == 0)
+        {
+            return ammoCannonball -= numberOfRounds;
+        }
+        else if (ammoType == 1)
+        {
+            return ammoHotshot -= numberOfRounds;
+        }
+        else return 0;
     }
     private void ItemCycleList()
     {
@@ -267,4 +288,6 @@ public class PlayerMovement : MonoBehaviour
         }
         //CurrentItemObject = Items[CurrentItemInt];
     }
+
 }
+
