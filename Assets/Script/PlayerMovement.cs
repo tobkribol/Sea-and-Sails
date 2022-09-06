@@ -7,33 +7,34 @@ public class PlayerMovement : MonoBehaviour
 {
     //"Ctrl + M, O" to collapse.
 
-    //class Input
     Weapons weapons;
     SailRotation sr;
     [SerializeField] Transform [] shipSails;
 
-
-    // Variable player input
     [Header("Ship stats")]
-    [HideInInspector] public float moveSpeed = 0.0f;
+    [HideInInspector] public float moveSpeed;
     [SerializeField] private float maxSpeed = 1.5f;
-    [SerializeField] private float acceleration = 1f;
-    [SerializeField] private float deacceleration = 0.9f;
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] public float timeBetweenAttack = 0.15f;
 
 
-    //Inventory
     [Header("Ship Inventory")]
     [SerializeField] public int numberOfGuns = 24;
+
     [SerializeField] public int ammoCannonball = 200;
+    [SerializeField] float cannonballDamage = 10f;
+
     [SerializeField] public int ammoHotshot = 200;
+    [SerializeField] float hotshotDamage = 25f;
+
+    [SerializeField] public float GunFireDisance = 4.00f;
+    [SerializeField] public float shootForce = 4f;
     [SerializeField] private ProjectileBehaviour[] ProjectilePrefab;
+    public float currentAmmoType;
     private int CurrentItemInt;
     private int numberOfCycles = 1;
 
 
-    //Standard  
     [Header("Inputdata")]
     [SerializeField] private Transform [] LaunchOffsetRight;
     [SerializeField] private Transform[] LaunchOffsetLeft;
@@ -43,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
 
 
     [Header("Canvas Data")]
+    [SerializeField] private Text shipSpeedText; //need UnityEngine.UI
+    [SerializeField] private Text shipSailAngleText; //need UnityEngine.UI
     [SerializeField] private Text[] ammoText; //need UnityEngine.UI
     [HideInInspector] public bool shootSide = true;
     private int ammoType = 0;
@@ -53,18 +56,24 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public Vector2 moveDirection;
     public ParticleSystem PS;
 
+    float shipCurrentSpeed;
+
 
     private void Start()
     {
         ammoText[0].text = "Cannonball: " + ammoCannonball;
         ammoText[1].text = "Hotshot: " + ammoHotshot;
         sr = shipSails[0].GetComponent<SailRotation>();
+        currentAmmoType = cannonballDamage;
 
     }
     void Update()
     {
         ProcessInputs();
         ItemCycleList();
+
+        shipSpeedText.text = string.Format("Ship Speed: {0:F1} m/s", rb.velocity.magnitude*10, 1);
+        shipSailAngleText.text = string.Format("Sail angle: {0:F0} °", sr.GetSailWindAngle(), 1);
     }
     private void FixedUpdate()
     {
@@ -93,14 +102,16 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             ammoType = 0;
+            currentAmmoType = cannonballDamage;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             ammoType = 1;
+            currentAmmoType = hotshotDamage;
         }
 
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             SwitchCannonSide();
         }
@@ -111,8 +122,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (rb.velocity.magnitude < maxSpeed)
         {
-            rb.AddForce(transform.up * moveSpeed * sr.GetWindSpeedBoost()); //Physics based movement
-            Debug.Log("GetWindSpeedBoost: " + sr.GetWindSpeedBoost() + "| GetSailWindAngle: " + sr.GetSailWindAngle() + "| GetWindSpeed: " + sr.GetWindSpeed());
+            shipCurrentSpeed = moveSpeed * sr.GetWindSpeedBoost();
+            rb.AddForce(transform.up * shipCurrentSpeed); //Physics based movement
+            //Debug.Log("GetWindSpeedBoost: " + sr.GetWindSpeedBoost() + "| GetSailWindAngle: " + sr.GetSailWindAngle() + "| GetWindSpeed: " + sr.GetWindSpeed());
             //https://answers.unity.com/questions/616195/how-to-make-an-object-go-the-direction-it-is-facin.html
             //https://github.com/vlytsus/unity-3d-boat/blob/cf17525846dd67147b21ee479b7e6e1572c27b92/Assets/Scenes/BoatForces.cs
         }

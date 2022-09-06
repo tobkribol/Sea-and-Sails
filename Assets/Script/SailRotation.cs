@@ -20,12 +20,15 @@ public class SailRotation : MonoBehaviour
 
     private void Update()
     {
+        //Set Compass arrow to sails
+        wm.sailRotationArrow.eulerAngles = transform.eulerAngles + new Vector3(0,0,180f);
 
         //Rotation
         if (Input.GetKey(KeyCode.Q))
         {
             Vector3 rotationToAdd = new Vector3(0, 0, rotationSpeedSails * Time.deltaTime);
             transform.Rotate(rotationToAdd);
+
             //transform.rotation = Quaternion.Euler(new Vector3(0, 0, transform.rotation.z + rotationSpeed));
         }
         else if (Input.GetKey(KeyCode.E))
@@ -57,16 +60,23 @@ public class SailRotation : MonoBehaviour
     
     public float GetWindSpeedBoost()
     {
+        //https://navalaction.fandom.com/wiki/Sailing_Profile
+
         float SailWindAngle = GetSailWindAngle();
-        if (SailWindAngle < 10)
+        if (SailWindAngle < 5)
+            //Running | Accually less effective for large ships
+            WindSpeedBoost = 0.9f;
+        else if (SailWindAngle < 75)
+            //Broad Reach | Most effective
             WindSpeedBoost = 1.0f;
-        else if (SailWindAngle < 20)
-            WindSpeedBoost = 0.8f;
-        else if (SailWindAngle < 40)
-            WindSpeedBoost = 0.4f;
-        else if (SailWindAngle < 100)
-            WindSpeedBoost = 0.2f;
-        else if (SailWindAngle > 100)
+        else if (SailWindAngle < 90)
+            //Beam Reach
+            WindSpeedBoost = 0.80f;
+        else if (SailWindAngle < 135)
+            //Close Hauled
+            WindSpeedBoost = 0.5f;
+        else if (SailWindAngle > 150)
+            //No Sail zone
             WindSpeedBoost = 0.01f;
         return WindSpeedBoost * wm.windSpeed;
 

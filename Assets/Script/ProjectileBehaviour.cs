@@ -6,17 +6,17 @@ using UnityEngine.UI;
 public class ProjectileBehaviour : MonoBehaviour
 {
     //Inputdata
-    [SerializeField] public float shootForce = 4f;
-    [SerializeField] public float shootForceSpread = 1f;
+    [SerializeField] public float shootForceSpread = 0.6f;
     [SerializeField] float speed = 12f;
-    [SerializeField] float destroyTime = 0.35f;
     [SerializeField] private Rigidbody2D rb;
+    private EnemyBehaveour enemyBehaveour;
+
 
     //Get Player data
-    public GameObject Player;
+    private GameObject Player;
     PlayerLife PlayerLifeScript;
     PlayerMovement PlayerMovement;
-    [SerializeField] public Text killText; //need UnityEngine.UI
+    //[SerializeField] public Text killText; //need UnityEngine.UI
 
 
     // Update is called once per frame
@@ -27,34 +27,36 @@ public class ProjectileBehaviour : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player");
         PlayerLifeScript = Player.GetComponent<PlayerLife>();
         PlayerMovement = Player.GetComponent<PlayerMovement>();
-        Vector2 projectileDirection = Player.transform.right.normalized;
 
+        Vector2 projectileDirection = Player.transform.right.normalized;
+        
         if (PlayerMovement.shootSide)
         {
-            rb.AddForce(projectileDirection * (shootForce + (Random.Range(-shootForceSpread / 2, shootForceSpread / 2))), ForceMode2D.Impulse);
+            rb.AddForce(projectileDirection * (PlayerMovement.shootForce + (Random.Range(-shootForceSpread, shootForceSpread))), ForceMode2D.Impulse);
         }
         else
         {
-            rb.AddForce(-projectileDirection * (shootForce + (Random.Range(-shootForceSpread / 2, shootForceSpread / 2))), ForceMode2D.Impulse);
+            rb.AddForce(-projectileDirection * (PlayerMovement.shootForce + (Random.Range(-shootForceSpread, shootForceSpread))), ForceMode2D.Impulse);
         }
     }
 
     void Update()
     {
-        Destroy(gameObject, destroyTime); //Destroy if it does not hit anything
+        
+        Destroy(gameObject, PlayerMovement.GunFireDisance); //Destroy if it does not hit anything
+
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            //SailHelthBarFunction.SetHealthBarValue(SailHelthBarFunction.GetHealthBarValue() - 0.25f);
-            //PlayerLifeScript.SetHealthAnimationValue(); //Testing
-            Destroy(collision.gameObject);
-            PlayerLifeScript.killCount += 1;
-            Debug.Log("Kills: " + PlayerLifeScript.killCount);
-            //killText.text = "Kills: " + PlayerLifeScript.killCount.ToString(); //Not displaying 
+            enemyBehaveour = collision.gameObject.GetComponent<EnemyBehaveour>();
+            enemyBehaveour.health -= PlayerMovement.currentAmmoType;
+            Debug.Log(PlayerMovement.currentAmmoType);
             Destroy(gameObject);
+
         }
 
         else if (collision.gameObject.CompareTag("Player"))

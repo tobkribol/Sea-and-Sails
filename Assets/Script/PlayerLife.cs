@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerLife : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class PlayerLife : MonoBehaviour
     //private Animation animation;
     public int killCount = 0;
     [SerializeField] private float playerHealth = 1.0f;
-    
+    [SerializeField] public Text killText; //need UnityEngine.UI
+
     //private float health = SailHelthBarFunction.GetHealthBarValue();
 
     // Start is called before the first frame update
@@ -21,13 +23,12 @@ public class PlayerLife : MonoBehaviour
         anim = GetComponent<Animator>();
         move = GetComponent<PlayerMovement>();
         //animation = GetComponent<Animation>();
-
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        killText.text = "Kills: " + killCount;
     }
 
     private void OnCollisionEnter2D(Collision2D collision) 

@@ -64,6 +64,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectwind: {fileID: 0}
   rotationSpeedSails: 45
+  WindSpeedBoost: 0
 --- !u!1 &246405764
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,6 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectwind: {fileID: 0}
   rotationSpeedSails: 45
+  WindSpeedBoost: 0
 --- !u!1 &1145685758
 GameObject:
   m_ObjectHideFlags: 0
@@ -525,6 +527,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectwind: {fileID: 0}
   rotationSpeedSails: 45
+  WindSpeedBoost: 0
 --- !u!1 &1506344541
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,6 +860,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b72d67bc7bbf0545919f47a16a44a38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shipSails:
+  - {fileID: 1108369997}
   moveSpeed: 0
   maxSpeed: 20
   acceleration: 0.1
@@ -878,6 +883,8 @@ MonoBehaviour:
   rb: {fileID: 7061844666675684001}
   shipRotateAxis: {fileID: 4057719128342955829}
   shipSailMid: {fileID: 0}
+  shipSpeedText: {fileID: 0}
+  shipSailAngleText: {fileID: 0}
   ammoText:
   - {fileID: 0}
   - {fileID: 0}
