@@ -9,6 +9,7 @@ public class ProjectileBehaviour : MonoBehaviour
     [SerializeField] public float shootForceSpread = 0.6f;
     [SerializeField] float speed = 12f;
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private ParticleSystem PS;
     private EnemyBehaveour enemyBehaveour;
 
 
@@ -52,6 +53,9 @@ public class ProjectileBehaviour : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
+
+            Instantiate(PS, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 0, 90f)));
+            Instantiate(PS, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 0, -90f)));
             enemyBehaveour = collision.gameObject.GetComponent<EnemyBehaveour>();
             enemyBehaveour.health -= PlayerMovement.currentAmmoType;
             Debug.Log(PlayerMovement.currentAmmoType);
