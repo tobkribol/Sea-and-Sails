@@ -22,10 +22,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public int numberOfGuns = 24;
 
     [SerializeField] public int ammoCannonball = 200;
-    [SerializeField] float cannonballDamage = 10f;
+    [SerializeField] float cannonballDamage = 5f;
 
     [SerializeField] public int ammoHotshot = 200;
-    [SerializeField] float hotshotDamage = 25f;
+    [SerializeField] float hotshotDamage = 15f;
 
     [SerializeField] public float GunFireDisance = 4.00f;
     [SerializeField] public float shootForce = 4f;
@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Text shipSailAngleText; //need UnityEngine.UI
     [SerializeField] private Text[] ammoText; //need UnityEngine.UI
     [HideInInspector] public bool shootSide = true;
-    private int ammoType = 0;
+    public int ammoType = 0;
 
     bool alreadyShootingLeft = false;
     bool alreadyShootingRight = false;

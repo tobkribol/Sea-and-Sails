@@ -53,9 +53,12 @@ public class ProjectileBehaviour : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-
-            Instantiate(PS, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 0, 90f)));
-            Instantiate(PS, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 0, -90f)));
+            int debreeRotation = -1;
+            if (PlayerMovement.shootSide)
+            {
+                debreeRotation = 1;
+            }
+            Instantiate(PS, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 0, debreeRotation* 90f)));
             enemyBehaveour = collision.gameObject.GetComponent<EnemyBehaveour>();
             enemyBehaveour.health -= PlayerMovement.currentAmmoType;
             Debug.Log(PlayerMovement.currentAmmoType);
