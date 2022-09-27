@@ -7,7 +7,7 @@ public class SailRotation : MonoBehaviour
     [SerializeField] Transform objectwind;
     [SerializeField] float rotationSpeedSails = 45.0f;
     WindManagment wm;
-    public float WindSpeedBoost;
+    [HideInInspector] public float WindSpeedBoost;
     private float windSpeed;
 
 

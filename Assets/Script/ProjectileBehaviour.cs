@@ -61,7 +61,6 @@ public class ProjectileBehaviour : MonoBehaviour
             Instantiate(PS, transform.position, transform.rotation * Quaternion.Euler(new Vector3(0, 0, debreeRotation* 90f)));
             enemyBehaveour = collision.gameObject.GetComponent<EnemyBehaveour>();
             enemyBehaveour.health -= PlayerMovement.currentAmmoType;
-            Debug.Log(PlayerMovement.currentAmmoType);
             Destroy(gameObject);
 
         }

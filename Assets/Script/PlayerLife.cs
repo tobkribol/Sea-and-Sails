@@ -9,6 +9,7 @@ public class PlayerLife : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private PlayerMovement move;
+    private EnemyBehaveour enemyBehaveour;
     //private Animation animation;
     public int killCount = 0;
     [SerializeField] private float playerHealth = 1.0f;
@@ -35,9 +36,13 @@ public class PlayerLife : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            SailHelthBarFunction.SetHealthBarValue(SailHelthBarFunction.GetHealthBarValue() - 0.21f);
+            SailHelthBarFunction.SetHealthBarValue(SailHelthBarFunction.GetHealthBarValue() - 0.10f);
             Debug.Log("health: " + SailHelthBarFunction.GetHealthBarValue());
             SetHealthAnimationValue();
+
+            //damage enemy hull
+            enemyBehaveour = collision.gameObject.GetComponent<EnemyBehaveour>();
+            enemyBehaveour.health -= 10;
 
             if (SailHelthBarFunction.GetHealthBarValue() < 0.01f)
             {

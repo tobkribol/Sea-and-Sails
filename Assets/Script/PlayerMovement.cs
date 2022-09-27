@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxSpeed = 1.5f;
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] public float timeBetweenAttack = 0.15f;
+    [SerializeField] public float timeBetweenAttackMax = 1.20f;
+    [SerializeField] public float timeBetweenAttackMin = 0.05f;
 
 
     [Header("Ship Inventory")]
@@ -65,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
         ammoText[1].text = "Hotshot: " + ammoHotshot;
         sr = shipSails[0].GetComponent<SailRotation>();
         currentAmmoType = cannonballDamage;
+        timeBetweenAttack = timeBetweenAttackMax;
 
     }
     void Update()
@@ -83,12 +86,26 @@ public class PlayerMovement : MonoBehaviour
 
         {
             FireCannon();
+
+            //Increase fire rate while holding "fire1" down
+            if (timeBetweenAttack > timeBetweenAttackMin)
+            {
+                Invoke(nameof(TimeBetweenAttackIncrease), 0.5f);
+            }
+
         }
+
+        else if (Input.GetButtonUp("Fire1"))
+        {
+            timeBetweenAttack = timeBetweenAttackMax;
+        }
+        
+
     }
     void ProcessInputs()
     {
         //Move input
-        if (Input.GetKeyDown(KeyCode.W) && moveSpeed < 50)
+        if (Input.GetKeyDown(KeyCode.W) && moveSpeed < 75)
         {
             moveSpeed += 25;
         }
@@ -143,6 +160,13 @@ public class PlayerMovement : MonoBehaviour
             transform.Rotate(rotationToAdd);
         }
     }
+
+    private void TimeBetweenAttackIncrease()
+    {
+        timeBetweenAttack -= 0.001f;
+        Debug.Log("TimeBetweenAttack: " + timeBetweenAttack);
+    }
+
     private void FireCannon()
     {
         int numberOfGunsSide = numberOfGuns / 2;
@@ -216,7 +240,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
         }
-        Invoke(nameof(ResetAttackRight), timeBetweenAttack);
+        //Invoke(nameof(ResetAttackRight), Random.Range(-0.02f,0.02f) + timeBetweenAttack); //Create some randomness to the fire mechanism
     }
     public void ResetAttackLeft()
     {
@@ -257,7 +281,7 @@ public class PlayerMovement : MonoBehaviour
                     alreadyShootingRight = true;
                     ShootCannon(numberOfRounds, LaunchOffsetRight[0], LaunchOffsetRight[1]);
                     ammoText[ammoType].text = ammoTextType + ReduceAmmo(numberOfRounds);
-                    Invoke(nameof(ResetAttackRight), timeBetweenAttack);
+                    Invoke(nameof(ResetAttackRight), Random.Range(-0.02f, 0.02f) + timeBetweenAttack);
                 }
                 break;
 
@@ -267,7 +291,7 @@ public class PlayerMovement : MonoBehaviour
                     alreadyShootingLeft = true;
                     ShootCannon(numberOfRounds, LaunchOffsetLeft[0], LaunchOffsetLeft[1]);
                     ammoText[ammoType].text = ammoTextType + ReduceAmmo(numberOfRounds);
-                    Invoke(nameof(ResetAttackLeft), timeBetweenAttack);
+                    Invoke(nameof(ResetAttackLeft), Random.Range(-0.02f, 0.02f) + timeBetweenAttack);
                 }
                 break;
         }

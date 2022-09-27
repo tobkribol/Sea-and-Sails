@@ -9506,6 +9506,10 @@ PrefabInstance:
       propertyPath: objectwind
       value: 
       objectReference: {fileID: 1307956332}
+    - target: {fileID: 19947005, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: rotationSpeedSails
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 246405765, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
       propertyPath: m_LocalScale.z
       value: 0
@@ -9522,6 +9526,10 @@ PrefabInstance:
       propertyPath: objectwind
       value: 
       objectReference: {fileID: 1307956332}
+    - target: {fileID: 1108369998, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: rotationSpeedSails
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 1145685761, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
       propertyPath: m_SortingOrder
       value: 0
@@ -9534,6 +9542,10 @@ PrefabInstance:
       propertyPath: objectwind
       value: 
       objectReference: {fileID: 1307956332}
+    - target: {fileID: 1501839515, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: rotationSpeedSails
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 1506344542, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.01
@@ -9599,9 +9611,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 314833164}
     - target: {fileID: 7061844666675684002, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: timeBetweenAttack
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7061844666675684002, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
       propertyPath: projectileBehaviour
       value: 
       objectReference: {fileID: 866287111}
+    - target: {fileID: 7061844666675684002, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: timeBetweenAttackMax
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7061844666675684002, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
+      propertyPath: timeBetweenAttackMin
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 7061844666675684002, guid: 0fd795a358fc2b44596d90ad76a583ad, type: 3}
       propertyPath: ammoText.Array.data[0]
       value: 
@@ -9760,6 +9784,10 @@ PrefabInstance:
     - target: {fileID: 4871426040563342784, guid: c425ae6d994b4024d8907dcb3b5d6bd3, type: 3}
       propertyPath: m_Name
       value: Compass
+      objectReference: {fileID: 0}
+    - target: {fileID: 5537219561944649756, guid: c425ae6d994b4024d8907dcb3b5d6bd3, type: 3}
+      propertyPath: constatnWindSpeed
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6267196362475278129, guid: c425ae6d994b4024d8907dcb3b5d6bd3, type: 3}
       propertyPath: m_Pivot.x

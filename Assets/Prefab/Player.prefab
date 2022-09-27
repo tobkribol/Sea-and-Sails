@@ -864,16 +864,19 @@ MonoBehaviour:
   - {fileID: 1108369997}
   moveSpeed: 0
   maxSpeed: 20
-  acceleration: 0.1
-  deacceleration: 0.9
   rotationSpeed: 40
-  timeBetweenAttack: 0.1
+  timeBetweenAttack: 0.05
   numberOfGuns: 2
   ammoCannonball: 200
+  cannonballDamage: 5
   ammoHotshot: 200
+  hotshotDamage: 15
+  GunFireDisance: 4
+  shootForce: 4
   ProjectilePrefab:
   - {fileID: 5013182278604835448, guid: 81d5a038f4ce43e4cb1696eda19744f9, type: 3}
   - {fileID: 5013182278604835448, guid: 749d08c177c7aa5478a64a17b071c49e, type: 3}
+  currentAmmoType: 0
   LaunchOffsetRight:
   - {fileID: 4066295703896943842}
   - {fileID: 4066295705688823127}
@@ -889,6 +892,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   shootSide: 1
+  ammoType: 0
   moveDirection: {x: 0, y: 0}
   PS: {fileID: 2542473984900531951, guid: 9c1a67d5b13870b4a9be20b328bad042, type: 3}
 --- !u!111 &4066295704575067121
@@ -942,6 +946,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   killCount: 0
   playerHealth: 1
+  killText: {fileID: 0}
 --- !u!1 &7941423151557659797
 GameObject:
   m_ObjectHideFlags: 0
